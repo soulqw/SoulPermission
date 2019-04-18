@@ -1,0 +1,49 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:1:1-9:12
+INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:1:1-9:12
+INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:1:1-9:12
+INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:1:1-9:12
+INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:1:1-9:12
+INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:1:1-9:12
+INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:1:1-9:12
+	package
+		ADDED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:2:11-32
+		INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
+		INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
+		ADDED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:1:1-9:12
+		INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
+		ADDED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:1:1-9:12
+		INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:1:11-69
+application
+ADDED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:3:5-8:19
+provider#com.qw.soul.permission.InitProvider
+ADDED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:4:9-7:45
+	android:authorities
+		ADDED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:4:19-77
+	android:multiprocess
+		ADDED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:6:19-46
+	android:exported
+		ADDED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:7:19-43
+	android:name
+		ADDED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml:5:19-58
+uses-sdk
+INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
+INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
+INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
+INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
+		ADDED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
+		INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
+		ADDED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
+		INJECTED from /Users/cd5160866/Documents/githupSpace/SoulPermission/soulpermission/src/main/AndroidManifest.xml
