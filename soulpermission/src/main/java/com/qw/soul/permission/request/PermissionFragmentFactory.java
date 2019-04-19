@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-
 import com.qw.soul.permission.request.fragment.PermissionFragment;
 import com.qw.soul.permission.request.fragment.PermissionSupportFragment;
 
@@ -26,7 +25,7 @@ class PermissionFragmentFactory {
                 permissionSupportFragment = new PermissionSupportFragment();
                 supportFragmentManager.beginTransaction()
                         .add(permissionSupportFragment, FRAGMENT_TAG)
-                        .commitNow();
+                        .commitNowAllowingStateLoss();
             }
             action = permissionSupportFragment;
         } else {
@@ -37,9 +36,9 @@ class PermissionFragmentFactory {
                 FragmentTransaction transaction = fragmentManager.beginTransaction()
                         .add(permissionFragment, FRAGMENT_TAG);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    transaction.commitNow();
+                    transaction.commitNowAllowingStateLoss();
                 } else {
-                    transaction.commit();
+                    transaction.commitAllowingStateLoss();
                 }
             }
             action = permissionFragment;

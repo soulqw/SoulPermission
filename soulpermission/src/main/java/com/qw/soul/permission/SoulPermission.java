@@ -45,6 +45,15 @@ public class SoulPermission {
         return instance;
     }
 
+    public static void init(@NonNull Application application) {
+        if (null != globalContext) {
+            PermissionDebug.w(TAG, "already init");
+            return;
+        }
+        globalContext = application;
+        getInstance().registerLifecycle(globalContext);
+    }
+
     /**
      * 设置debug
      */
@@ -70,10 +79,9 @@ public class SoulPermission {
      * @return 返回检查的结果
      */
     public List<Permission> checkPermissions(@NonNull String... permissions) {
-        Activity activity = getContainer();
         List<Permission> resultPermissions = new LinkedList<>();
         for (String permission : permissions) {
-            int isGranted = checkPermission(activity, permission)
+            int isGranted = checkPermission(getContext(), permission)
                     ? PackageManager.PERMISSION_GRANTED
                     : PackageManager.PERMISSION_DENIED;
             resultPermissions.add(new Permission(permission, isGranted, false));
@@ -112,8 +120,6 @@ public class SoulPermission {
      * @param listener    请求之后的回调
      */
     public void checkAndRequestPermissions(@NonNull Permissions permissions, @NonNull final CheckRequestPermissionsListener listener) {
-        //get activity
-        Activity activity = getContainer();
         //首先检查权限
         List<Permission> checkResult = checkPermissions(permissions.getPermissions());
         //选出被拒绝的权限
@@ -122,6 +128,15 @@ public class SoulPermission {
         if (refusedPermissionList.size() > 0) {
             //满足请求运行时权限的条件
             if (canRequestRunTimePermission()) {
+                //get activity
+                Activity activity;
+                try {
+                    activity = getContainer();
+                } catch (Exception e) {
+                    //activity status error do not request
+                    PermissionDebug.e(TAG, e.toString());
+                    return;
+                }
                 requestRuntimePermission(activity, refusedPermissionList, listener);
             } else {
                 PermissionDebug.d(TAG, "some permission refused but can not request");
@@ -137,14 +152,6 @@ public class SoulPermission {
         return globalContext;
     }
 
-    void init(@NonNull Application application) {
-        if (null != globalContext) {
-            PermissionDebug.w(TAG, "already init");
-            return;
-        }
-        globalContext = application;
-        getInstance().registerLifecycle(globalContext);
-    }
 
     private SoulPermission() {
     }
@@ -159,8 +166,7 @@ public class SoulPermission {
      */
     private Activity getContainer() {
         //check status
-        if (null == lifecycle || lifecycle.topActWeakReference.get() == null) {
-            PermissionDebug.e(TAG, "status error");
+        if (null == lifecycle || lifecycle.topActWeakReference.get() == null || lifecycle.topActWeakReference.get().isFinishing()) {
             throw new IllegalStateException("lifecycle or activity did not existence, check your app status before use soulPermission");
         }
         return lifecycle.topActWeakReference.get();
@@ -186,8 +192,7 @@ public class SoulPermission {
      * 是否满足请求运行时权限的条件
      */
     private boolean canRequestRunTimePermission() {
-        Context context = getContainer();
-        return !Tools.isOldPermissionSystem(context);
+        return !Tools.isOldPermissionSystem(getContext());
     }
 
     private boolean checkPermission(Context context, String permission) {

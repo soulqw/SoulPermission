@@ -1,9 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.qw.soul">
     <application>
-        <provider android:authorities="${applicationId}.permission.provider"
-                  android:name=".permission.InitProvider"
-                  android:multiprocess="true"
-                  android:exported="false"/>
     </application>
 </manifest>
