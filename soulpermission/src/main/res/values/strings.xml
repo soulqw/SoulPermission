@@ -1,8 +1,0 @@
-<resources>
-    <string name="permission_camera">相机权限</string>
-    <string name="permission_location">定位权限</string>
-    <string name="permission_call">电话权限</string>
-    <string name="permission_contact">通讯录权限</string>
-    <string name="permission_storage">存储权限</string>
-    <string name="permission_undefined">未知权限</string>
-</resources>

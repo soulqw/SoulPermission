@@ -1,7 +1,0 @@
-com.qw.soul
-string permission_call
-string permission_camera
-string permission_contact
-string permission_location
-string permission_storage
-string permission_undefined
