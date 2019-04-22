@@ -62,6 +62,11 @@ public class Permission {
         return permissionName + " isGranted: " + grantResult + " shouldRationale " + shouldRationale;
     }
 
+    /**
+     * 获取权限名称描述
+     *
+     * @return desc of permission
+     */
     public String getPermissionNameDesc() {
         Context context = SoulPermission.getInstance().getContext();
         if (null == context) {

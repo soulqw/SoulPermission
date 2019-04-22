@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Permissions;
@@ -15,6 +16,7 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionListener;
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener;
 import com.qw.soul.permission.callbcak.RequestPermissionListener;
 import com.qw.soul.permission.debug.PermissionDebug;
+import com.qw.soul.permission.exception.InitException;
 import com.qw.soul.permission.request.PermissionRequester;
 
 import java.util.LinkedList;
@@ -35,6 +37,8 @@ public class SoulPermission {
 
     private static Application globalContext;
 
+    private static boolean alreadyInit;
+
     /**
      * 获取 SoulPermission 对象
      */
@@ -45,13 +49,17 @@ public class SoulPermission {
         return instance;
     }
 
+    /**
+     * init
+     */
     public static void init(@NonNull Application application) {
-        if (null != globalContext) {
+        if (alreadyInit) {
             PermissionDebug.w(TAG, "already init");
             return;
         }
         globalContext = application;
         getInstance().registerLifecycle(globalContext);
+        alreadyInit = true;
     }
 
     /**
@@ -69,7 +77,7 @@ public class SoulPermission {
      * @see #checkPermissions
      */
     public Permission checkSinglePermission(@NonNull String permission) {
-        return checkPermissions(permission).get(0);
+        return checkPermissions(permission)[0];
     }
 
     /**
@@ -78,7 +86,7 @@ public class SoulPermission {
      * @param permissions 权限名称 ,可检测多个
      * @return 返回检查的结果
      */
-    public List<Permission> checkPermissions(@NonNull String... permissions) {
+    public Permission[] checkPermissions(@NonNull String... permissions) {
         List<Permission> resultPermissions = new LinkedList<>();
         for (String permission : permissions) {
             int isGranted = checkPermission(getContext(), permission)
@@ -86,9 +94,8 @@ public class SoulPermission {
                     : PackageManager.PERMISSION_DENIED;
             resultPermissions.add(new Permission(permission, isGranted, false));
         }
-        return resultPermissions;
+        return PermissionTools.convert(resultPermissions);
     }
-
 
     /**
      * 单个权限的检查与申请
@@ -120,43 +127,70 @@ public class SoulPermission {
      * @param listener    请求之后的回调
      */
     public void checkAndRequestPermissions(@NonNull Permissions permissions, @NonNull final CheckRequestPermissionsListener listener) {
-        //首先检查权限
-        List<Permission> checkResult = checkPermissions(permissions.getPermissions());
-        //选出被拒绝的权限
-        final List<Permission> refusedPermissionList = filterRefusedPermissions(checkResult);
-        //大于0表示有被拒绝的权限
-        if (refusedPermissionList.size() > 0) {
-            //满足请求运行时权限的条件
+        //check permission first
+        Permission[] checkResult = checkPermissions(permissions.getPermissionsString());
+        //get refused permissions
+        final Permission[] refusedPermissionList = filterRefusedPermissions(checkResult);
+        if (refusedPermissionList.length > 0) {
+            //can  request runTime permission
             if (canRequestRunTimePermission()) {
-                //get activity
-                Activity activity;
-                try {
-                    activity = getContainer();
-                } catch (Exception e) {
-                    //activity status error do not request
-                    PermissionDebug.e(TAG, e.toString());
-                    return;
-                }
-                requestRuntimePermission(activity, refusedPermissionList, listener);
+                requestPermissions(Permissions.build(refusedPermissionList), listener);
             } else {
                 PermissionDebug.d(TAG, "some permission refused but can not request");
-                listener.onPermissionDenied(Tools.convert(refusedPermissionList));
+                listener.onPermissionDenied(refusedPermissionList);
             }
         } else {
             PermissionDebug.d(TAG, "all permissions ok");
-            listener.onAllPermissionOk(Tools.convert(checkResult));
+            listener.onAllPermissionOk(checkResult);
         }
     }
 
+    /**
+     * 获得全局applicationContext
+     */
     public Context getContext() {
         return globalContext;
     }
 
+    /**
+     * 提供当前栈顶Activity
+     *
+     * @return the top Activity in your app
+     */
+    @Nullable
+    public Activity getTopActivity() {
+        Activity result = null;
+        try {
+            result = getContainer();
+        } catch (Exception e) {
+            PermissionDebug.e(TAG, e.toString());
+        }
+        return result;
+    }
+
+    /**
+     * 到系统权限设置页，已经适配部分手机系统，逐步更新
+     */
+    public void goPermissionSettings() {
+        PermissionTools.jumpPermissionPage(getContext());
+    }
+
+    void autoInit(Application application) {
+        if (null != globalContext) {
+            PermissionDebug.w(TAG, "already init ,did not auto Init");
+            return;
+        }
+        globalContext = application;
+        registerLifecycle(globalContext);
+    }
 
     private SoulPermission() {
     }
 
     private void registerLifecycle(Application context) {
+        if (null != lifecycle) {
+            context.unregisterActivityLifecycleCallbacks(lifecycle);
+        }
         lifecycle = new PermissionActivityLifecycle();
         context.registerActivityLifecycleCallbacks(lifecycle);
     }
@@ -166,8 +200,13 @@ public class SoulPermission {
      */
     private Activity getContainer() {
         //check status
-        if (null == lifecycle || lifecycle.topActWeakReference.get() == null || lifecycle.topActWeakReference.get().isFinishing()) {
-            throw new IllegalStateException("lifecycle or activity did not existence, check your app status before use soulPermission");
+        // may auto init failed
+        if (null == lifecycle || null == lifecycle.topActWeakReference) {
+            throw new InitException();
+        }
+        // activity status error
+        if (null == lifecycle.topActWeakReference.get() || lifecycle.topActWeakReference.get().isFinishing()) {
+            throw new IllegalStateException(" activity did not existence, check your app status before use soulPermission");
         }
         return lifecycle.topActWeakReference.get();
     }
@@ -175,7 +214,7 @@ public class SoulPermission {
     /**
      * 筛选出被拒绝的权限
      */
-    private List<Permission> filterRefusedPermissions(List<Permission> in) {
+    private Permission[] filterRefusedPermissions(Permission[] in) {
         final List<Permission> out = new LinkedList<>();
         for (Permission permission : in) {
             boolean isPermissionOk = permission.isGranted();
@@ -185,18 +224,18 @@ public class SoulPermission {
             }
         }
         PermissionDebug.d(TAG, "refusedPermissionList.size" + out.size());
-        return out;
+        return PermissionTools.convert(out);
     }
 
     /**
      * 是否满足请求运行时权限的条件
      */
     private boolean canRequestRunTimePermission() {
-        return !Tools.isOldPermissionSystem(getContext());
+        return !PermissionTools.isOldPermissionSystem(getContext());
     }
 
     private boolean checkPermission(Context context, String permission) {
-        if (Tools.isOldPermissionSystem(context)) {
+        if (PermissionTools.isOldPermissionSystem(context)) {
             return checkPermissionOld(context, permission);
         } else {
             return checkPermissionHigher(context, permission);
@@ -207,8 +246,21 @@ public class SoulPermission {
         return new OldPermissionChecker(context, permission).check();
     }
 
-    private void requestRuntimePermission(final Activity activity, final List<Permission> permissionsToRequest, final CheckRequestPermissionsListener listener) {
-        if (!Tools.checkMainThread()) {
+    private void requestPermissions(Permissions permissions, final CheckRequestPermissionsListener listener) {
+        //get activity
+        Activity activity;
+        try {
+            activity = getContainer();
+        } catch (Exception e) {
+            //activity status error do not request
+            PermissionDebug.e(TAG, e.toString());
+            return;
+        }
+        requestRuntimePermission(activity, permissions.getPermissions(), listener);
+    }
+
+    private void requestRuntimePermission(final Activity activity, final Permission[] permissionsToRequest, final CheckRequestPermissionsListener listener) {
+        if (!PermissionTools.checkMainThread()) {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
@@ -217,9 +269,9 @@ public class SoulPermission {
             });
             return;
         }
-        PermissionDebug.d(TAG, "start to request permissions size= " + permissionsToRequest.size());
+        PermissionDebug.d(TAG, "start to request permissions size= " + permissionsToRequest.length);
         new PermissionRequester(activity)
-                .withPermission(Tools.convert(permissionsToRequest))
+                .withPermission(permissionsToRequest)
                 .request(new RequestPermissionListener() {
                     @Override
                     public void onPermissionResult(Permission[] permissions) {
@@ -233,10 +285,10 @@ public class SoulPermission {
                         //运行时权限授予全部授予成功
                         if (refusedListAfterRequest.size() == 0) {
                             PermissionDebug.d(TAG, "all permission are request ok");
-                            listener.onAllPermissionOk(Tools.convert(permissionsToRequest));
+                            listener.onAllPermissionOk(permissionsToRequest);
                         } else {
                             PermissionDebug.d(TAG, "some permission are refused size=" + refusedListAfterRequest.size());
-                            listener.onPermissionDenied(Tools.convert(refusedListAfterRequest));
+                            listener.onPermissionDenied(PermissionTools.convert(refusedListAfterRequest));
                         }
                     }
                 });
