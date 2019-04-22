@@ -1,29 +1,27 @@
 package com.qw.simple;
 
-import android.Manifest;
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
-import com.qw.soul.permission.SoulPermission;
-import com.qw.soul.permission.bean.Permission;
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.READ_CONTACTS, new CheckRequestPermissionListener() {
-            @Override
-            public void onPermissionOk(Permission permission) {
-                Toast.makeText(MainActivity.this, "請求成功", Toast.LENGTH_SHORT).show();
-            }
+    }
 
-            @Override
-            public void onPermissionDenied(Permission permission) {
-                Toast.makeText(MainActivity.this, "請求失敗", Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void before(View view) {
+        startActivity(new Intent(MainActivity.this, BeforeActivity.class));
+    }
+
+    public void after(View view) {
+        startActivity(new Intent(MainActivity.this, AfterActivity.class));
+    }
+
+    public void apiGuide(View view) {
+        startActivity(new Intent(MainActivity.this, ApiGuideActivity.class));
     }
 }

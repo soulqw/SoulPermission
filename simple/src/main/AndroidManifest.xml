@@ -24,6 +24,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".BeforeActivity"/>
+        <activity android:name=".AfterActivity"/>
+        <activity android:name=".ApiGuideActivity"/>
     </application>
 
 </manifest>
