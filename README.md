@@ -93,9 +93,10 @@ dependencies {
  SoulPermission.getInstance().goPermissionSettings();
 ```
 #### 注意事项：
-SoulPermission内部自动初始化，如果你项目中使用了Tinker等可能会导致SoulPermission状态不正确的框架，请手动在你的Application类中调用init即可。
+- SoulPermission内部自动初始化，如果你项目中使用了Tinker等可能会导致SoulPermission内部初始化失败而导致状态不正确的框架[打开debug可以看到是否初始化失败]，请手动在你的Application类中调用init即可。
 
 ```java
+//invoke init in your application when auto init failed
 public class SimpleApplication extends Application {
     @Override
     public void onCreate() {
@@ -106,6 +107,7 @@ public class SimpleApplication extends Application {
 }
 
 ```
+- 如果需要在某个页面创建时候请求权限，请在onCreate()中使用、请不要在onResume()调用，否则权限未被动态授予前会陷入死循环。
 ### Screenshot：
 ![image](https://img-blog.csdnimg.cn/2019042223014322.png)
 ![image](https://img-blog.csdnimg.cn/20190422230154512.png)
