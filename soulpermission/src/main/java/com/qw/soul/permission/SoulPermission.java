@@ -60,6 +60,7 @@ public class SoulPermission {
         globalContext = application;
         getInstance().registerLifecycle(globalContext);
         alreadyInit = true;
+        PermissionDebug.d(TAG, "user init");
     }
 
     /**
@@ -132,7 +133,7 @@ public class SoulPermission {
         //get refused permissions
         final Permission[] refusedPermissionList = filterRefusedPermissions(checkResult);
         if (refusedPermissionList.length > 0) {
-            //can  request runTime permission
+            //can request runTime permission
             if (canRequestRunTimePermission()) {
                 requestPermissions(Permissions.build(refusedPermissionList), listener);
             } else {
@@ -177,7 +178,6 @@ public class SoulPermission {
 
     void autoInit(Application application) {
         if (null != globalContext) {
-            PermissionDebug.w(TAG, "already init ,did not auto Init");
             return;
         }
         globalContext = application;
@@ -208,6 +208,7 @@ public class SoulPermission {
         if (null == lifecycle.topActWeakReference.get() || lifecycle.topActWeakReference.get().isFinishing()) {
             throw new IllegalStateException(" activity did not existence, check your app status before use soulPermission");
         }
+        PermissionDebug.d(TAG, "top activity is " + lifecycle.topActWeakReference.get().getClass().getSimpleName());
         return lifecycle.topActWeakReference.get();
     }
 
@@ -218,7 +219,7 @@ public class SoulPermission {
         final List<Permission> out = new LinkedList<>();
         for (Permission permission : in) {
             boolean isPermissionOk = permission.isGranted();
-            //若一项权限不ok,添加到列表中
+            //add refused permission
             if (!isPermissionOk) {
                 out.add(permission);
             }
@@ -275,14 +276,13 @@ public class SoulPermission {
                 .request(new RequestPermissionListener() {
                     @Override
                     public void onPermissionResult(Permission[] permissions) {
-                        //这个列表用于展示运行时权限请求的结果，如果被拒，添加
+                        //this list contains all the refused permissions after request
                         List<Permission> refusedListAfterRequest = new LinkedList<>();
                         for (Permission requestResult : permissions) {
                             if (!requestResult.isGranted()) {
                                 refusedListAfterRequest.add(requestResult);
                             }
                         }
-                        //运行时权限授予全部授予成功
                         if (refusedListAfterRequest.size() == 0) {
                             PermissionDebug.d(TAG, "all permission are request ok");
                             listener.onAllPermissionOk(permissionsToRequest);

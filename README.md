@@ -1,5 +1,5 @@
 # SoulPermission
-#### 一行代码权限的更优解决方案：
+#### Android一行代码权限的更优解决方案：
  - 实现真正调用时请求的“真运行时权限”
  -  解耦Activity和Fragment、不再需要Context
  - 内部涵盖版本判断，一行代码封装权限请求和后续操作
@@ -7,9 +7,9 @@
  - 支持多项权限同时请求、支持系统权限页面跳转
 ## Installation：
 
-```
+```java
 dependencies {
-    implementation 'com.qw:soulpermission:1.0.10'
+    implementation 'com.qw:soulpermission:1.1.0'
 }
 ```
 ## Usage：
@@ -58,7 +58,7 @@ dependencies {
 - 包含shouldShowRequestPermissionRationale的情形
 
 ```java
-  SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.READ_CONTACTS,
+ SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.READ_CONTACTS,
                 new CheckRequestPermissionListener() {
                     @Override
                     public void onPermissionOk(Permission permission) {
@@ -83,17 +83,24 @@ dependencies {
 - 检查某项权限
 
 ```java
-   //you can also use checkPermissions() for a series of permissions
-        Permission checkResult = SoulPermission.getInstance().checkSinglePermission(Manifest.permission.ACCESS_FINE_LOCATION);
+//you can also use checkPermissions() for a series of permissions
+Permission checkResult = SoulPermission.getInstance().checkSinglePermission(Manifest.permission.ACCESS_FINE_LOCATION);
 ```
 - 跳转到权限设置
 
 
 ```java
- SoulPermission.getInstance().goPermissionSettings();
+SoulPermission.getInstance().goPermissionSettings();
 ```
+- 设置debug模式(看日志打印)
+
+```java
+SoulPermission.setDebug(true);
+```
+
 #### 注意事项：
-- SoulPermission内部自动初始化，如果你项目中使用了Tinker等可能会导致SoulPermission内部初始化失败而导致状态不正确的框架[打开debug可以看到是否初始化失败]，请手动在你的Application类中调用init即可。
+- 最低支持Android 4.0(Api level 14)
+- SoulPermission内部自动初始化，如果你项目中使用了Tinker等使用了替换Application方式从而可能会导致SoulPermission内部初始化失败的框架(打开debug通过在任意页面请求权限可以通过日志看到是否初始化失败)，请手动在你的Application类中调用init即可。
 
 ```java
 //invoke init in your application when auto init failed

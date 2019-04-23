@@ -194,7 +194,6 @@ class PermissionTools {
         }
     }
 
-
     private static void goOppoManager(Context context) {
         doStartApplicationWithPackageName(context, "com.coloros.safecenter");
     }
@@ -202,19 +201,13 @@ class PermissionTools {
     /**
      * doStartApplicationWithPackageName("com.yulong.android.security:remote")
      * 和Intent open = getPackageManager().getLaunchIntentForPackage("com.yulong.android.security:remote");
-     * startActivity(open);
-     * 本质上没有什么区别，通过Intent open...打开比调用doStartApplicationWithPackageName方法更快，也是android本身提供的方法
      */
     private static void goCoolpadManager(Context context) {
         doStartApplicationWithPackageName(context, "com.yulong.android.security:remote");
-      /*  Intent openQQ = getPackageManager().getLaunchIntentForPackage("com.yulong.android.security:remote");
-        startActivity(openQQ);*/
     }
 
     private static void goVivoManager(Context context) {
         doStartApplicationWithPackageName(context, "com.bairenkeji.icaller");
-     /*   Intent openQQ = getPackageManager().getLaunchIntentForPackage("com.vivo.securedaemonservice");
-        startActivity(openQQ);*/
     }
 
     private static void doStartApplicationWithPackageName(Context context, String packagename) {
@@ -222,9 +215,10 @@ class PermissionTools {
         try {
             packageinfo = context.getPackageManager().getPackageInfo(packagename, 0);
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            goOtherIntentSetting(context);
         }
         if (packageinfo == null) {
+            goOtherIntentSetting(context);
             return;
         }
         Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
