@@ -46,6 +46,13 @@
                 android:text="go system settings"/>
 
         <Button
+                android:onClick="checkNotification"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="checkSpecial[NotificationEnable]"/>
+
+        <Button
                 android:onClick="getTopActivity"
                 android:textAllCaps="false"
                 android:layout_width="match_parent"

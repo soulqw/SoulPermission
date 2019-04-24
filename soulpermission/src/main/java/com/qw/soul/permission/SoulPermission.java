@@ -1,6 +1,5 @@
 package com.qw.soul.permission;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -9,20 +8,19 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Permissions;
+import com.qw.soul.permission.bean.Special;
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener;
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener;
 import com.qw.soul.permission.callbcak.RequestPermissionListener;
+import com.qw.soul.permission.checker.CheckerFactory;
 import com.qw.soul.permission.debug.PermissionDebug;
 import com.qw.soul.permission.exception.InitException;
 import com.qw.soul.permission.request.PermissionRequester;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import static android.os.Build.VERSION_CODES.M;
 
 /**
  * @author cd5160866
@@ -96,6 +94,17 @@ public class SoulPermission {
             resultPermissions.add(new Permission(permission, isGranted, false));
         }
         return PermissionTools.convert(resultPermissions);
+    }
+
+    /**
+     * 检查特殊权限，譬如通知
+     *
+     * @param special 特殊权限枚举
+     * @return 检查结果
+     * @see Special
+     */
+    public boolean checkSpecialPermission(Special special) {
+        return CheckerFactory.create(getContext(), special).check();
     }
 
     /**
@@ -236,15 +245,7 @@ public class SoulPermission {
     }
 
     private boolean checkPermission(Context context, String permission) {
-        if (PermissionTools.isOldPermissionSystem(context)) {
-            return checkPermissionOld(context, permission);
-        } else {
-            return checkPermissionHigher(context, permission);
-        }
-    }
-
-    private boolean checkPermissionOld(Context context, String permission) {
-        return new OldPermissionChecker(context, permission).check();
+        return CheckerFactory.create(context, permission).check();
     }
 
     private void requestPermissions(Permissions permissions, final CheckRequestPermissionsListener listener) {
@@ -292,12 +293,6 @@ public class SoulPermission {
                         }
                     }
                 });
-    }
-
-    @TargetApi(M)
-    private boolean checkPermissionHigher(Context context, String permission) {
-        int checkResult = ContextCompat.checkSelfPermission(context, permission);
-        return checkResult == PackageManager.PERMISSION_GRANTED;
     }
 
 }

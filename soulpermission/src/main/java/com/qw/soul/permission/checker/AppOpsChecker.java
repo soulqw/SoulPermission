@@ -1,25 +1,32 @@
-package com.qw.soul.permission;
+package com.qw.soul.permission.checker;
 
 import android.Manifest;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.os.Binder;
+import android.os.Build;
 import com.qw.soul.permission.debug.PermissionDebug;
 
 import java.lang.reflect.Method;
 
+import static android.os.Build.VERSION_CODES.KITKAT;
+
 /**
  * @author cd5160866
  */
-class OldPermissionChecker {
+class AppOpsChecker implements PermissionChecker {
 
-    private static final String TAG = OldPermissionChecker.class.getSimpleName();
+    private static final String TAG = AppOpsChecker.class.getSimpleName();
 
     private Context context;
 
     private String permission;
 
-    OldPermissionChecker(Context context, String permission) {
+    AppOpsChecker(Context context) {
+        this(context, null);
+    }
+
+    AppOpsChecker(Context context, String permission) {
         this.context = context;
         this.permission = permission;
     }
@@ -34,32 +41,44 @@ class OldPermissionChecker {
      * @return 检查结果
      */
 
-    boolean check() {
+    @Override
+    public boolean check() {
+        if (null == permission) {
+            return true;
+        }
         switch (permission) {
             case Manifest.permission.READ_CONTACTS:
-                return checkOp(context, 4);
+                return checkOp(4);
+            case Manifest.permission.WRITE_CONTACTS:
+                return checkOp(5);
             case Manifest.permission.CALL_PHONE:
-                return checkOp(context, 13);
+                return checkOp(13);
+            case Manifest.permission.READ_PHONE_STATE:
+                return checkOp(51);
             case Manifest.permission.CAMERA:
-                return checkOp(context, 26);
+                return checkOp(26);
             case Manifest.permission.READ_EXTERNAL_STORAGE:
-                return checkOp(context, 59);
+                return checkOp(59);
             case Manifest.permission.WRITE_EXTERNAL_STORAGE:
-                return checkOp(context, 60);
+                return checkOp(60);
             case Manifest.permission.ACCESS_FINE_LOCATION:
             case Manifest.permission.ACCESS_COARSE_LOCATION:
-                return checkOp(context, 2);
+                return checkOp(2);
             default:
-                return true;
+                break;
         }
+        return true;
     }
 
-
-    private boolean checkOp(Context context, int op) {
+    boolean checkOp(int op) {
+        if (Build.VERSION.SDK_INT < KITKAT) {
+            PermissionDebug.e(TAG, "4.4 below");
+            return true;
+        }
         try {
             AppOpsManager manager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
             Method method = AppOpsManager.class.getDeclaredMethod("checkOp", int.class, int.class, String.class);
-            return AppOpsManager.MODE_ALLOWED == (int) method.invoke(manager, op, Binder.getCallingUid(), context.getPackageName());
+            return 0 == (int) method.invoke(manager, op, Binder.getCallingUid(), context.getPackageName());
         } catch (Exception e) {
             PermissionDebug.e(TAG, e.toString());
             e.printStackTrace();

@@ -6,12 +6,13 @@
  - 内部涵盖版本判断，一行代码封装权限请求和后续操作
  - 接入成本低，可以在公共方法中声明以后，无需在调用业务方写权限适配代码
  - 支持多项权限同时请求、支持系统权限页面跳转
+ - 支持检查通知权限
  - 支持debug模式
 ## Installation：
 
-```java
+```kotlin
 dependencies {
-    implementation 'com.qw:soulpermission:1.1.0'
+     implementation 'com.qw:soulpermission:1.1.1'
 }
 ```
 ## Usage：
@@ -88,7 +89,13 @@ dependencies {
 //you can also use checkPermissions() for a series of permissions
 Permission checkResult = SoulPermission.getInstance().checkSinglePermission(Manifest.permission.ACCESS_FINE_LOCATION);
 ```
-- 跳转到权限设置
+- 检查特殊权限[通知权限]
+
+```java
+ boolean checkResult = SoulPermission.getInstance().checkSpecialPermission(Special.NOTIFICATION);
+```
+
+- 跳转到应用设置页
 
 
 ```java
@@ -119,7 +126,7 @@ public class SimpleApplication extends Application {
 - 如果需要在某个页面创建时候请求权限，请在onCreate()中使用、请不要在onResume()调用，否则权限未被动态授予前会陷入死循环。
 ### Screenshot：
 ![image](https://img-blog.csdnimg.cn/2019042223014322.png)
-![image](https://img-blog.csdnimg.cn/20190422230154512.png)
+![image](https://img-blog.csdnimg.cn/20190424225824139.png)
 
 ### MoreDetail：
 #### [工作原理和最佳示例](https://blog.csdn.net/u014626094/article/details/89438614)

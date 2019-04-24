@@ -25,15 +25,15 @@ import static android.os.Build.VERSION_CODES.M;
 /**
  * @author cd5160866
  */
-class PermissionTools {
+public class PermissionTools {
+
+    public static boolean isOldPermissionSystem(Context context) {
+        int targetSdkVersion = context.getApplicationInfo().targetSdkVersion;
+        return android.os.Build.VERSION.SDK_INT < M || targetSdkVersion < M;
+    }
 
     static Permission[] convert(List<Permission> permissions) {
         return permissions.toArray(new Permission[0]);
-    }
-
-    static boolean isOldPermissionSystem(Context context) {
-        int targetSdkVersion = context.getApplicationInfo().targetSdkVersion;
-        return android.os.Build.VERSION.SDK_INT < M || targetSdkVersion < M;
     }
 
     static boolean checkMainThread() {
