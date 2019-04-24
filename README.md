@@ -1,10 +1,12 @@
 # SoulPermission
+ [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 #### Android一行代码权限的更优解决方案：
  - 实现真正调用时请求的“真运行时权限”
  -  解耦Activity和Fragment、不再需要Context
  - 内部涵盖版本判断，一行代码封装权限请求和后续操作
  - 接入成本低，可以在公共方法中声明以后，无需在调用业务方写权限适配代码
  - 支持多项权限同时请求、支持系统权限页面跳转
+ - 支持debug模式
 ## Installation：
 
 ```java
@@ -122,19 +124,5 @@ public class SimpleApplication extends Application {
 ### MoreDetail：
 #### [工作原理和最佳示例](https://blog.csdn.net/u014626094/article/details/89438614)
 
-## LICENSE
-```
-Copyright 2017 Google
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-```
+##### 如果有任何问题或者反馈请联系我：
+cd5160866@126.com
