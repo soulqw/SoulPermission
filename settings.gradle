@@ -1,1 +1,1 @@
-include ':soulpermission', ':simple'
+include ':soulpermission', ':sample'

@@ -1,4 +1,4 @@
-package com.qw.simple.utils;
+package com.qw.sample.utils;
 
 import android.Manifest;
 import android.app.Activity;
@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import com.qw.simple.adapter.CheckPermissionAdapter;
-import com.qw.simple.adapter.CheckPermissionWithRationaleAdapter;
+import com.qw.sample.adapter.CheckPermissionAdapter;
+import com.qw.sample.adapter.CheckPermissionWithRationaleAdapter;
 import com.qw.soul.permission.SoulPermission;
 import com.qw.soul.permission.bean.Permission;
 

@@ -1,4 +1,4 @@
-package com.qw.simple.utils;
+package com.qw.sample.utils;
 
 import android.app.Activity;
 import android.content.Context;

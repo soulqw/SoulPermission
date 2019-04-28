@@ -1,4 +1,4 @@
-package com.qw.simple;
+package com.qw.sample;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
-import com.qw.simple.utils.Utils;
-import com.qw.simple.utils.UtilsWithPermission;
+import com.qw.sample.utils.Utils;
+import com.qw.sample.utils.UtilsWithPermission;
 
 public class AfterActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_CONTACT = 1;

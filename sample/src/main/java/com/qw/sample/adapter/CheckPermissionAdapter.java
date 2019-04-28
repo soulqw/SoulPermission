@@ -1,4 +1,4 @@
-package com.qw.simple.adapter;
+package com.qw.sample.adapter;
 
 import android.app.Activity;
 import android.content.DialogInterface;
