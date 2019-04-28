@@ -12,7 +12,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 28
         versionCode 2
-        versionName "1.1.1"
+        versionName "1.1.2"
     }
 
     buildTypes {
@@ -35,7 +35,7 @@ def gitUrl = 'https://github.com/soulqw/SoulPermission.git'
 
 def libName = "soulpermission"
 group = "com.qw"
-version = "1.1.1"
+version = "1.1.2"
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs

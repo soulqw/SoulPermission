@@ -36,8 +36,15 @@ public class PermissionTools {
         return permissions.toArray(new Permission[0]);
     }
 
-    static boolean checkMainThread() {
+    static boolean assertMainThread() {
         return Looper.getMainLooper().getThread().getId() == Thread.currentThread().getId();
+    }
+
+    static void toast(Context context, String message) {
+        if (null == context) {
+            return;
+        }
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
     static void jumpPermissionPage(Context context) {

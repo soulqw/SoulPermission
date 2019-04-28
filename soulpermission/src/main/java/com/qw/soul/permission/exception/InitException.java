@@ -9,6 +9,6 @@ import java.lang.IllegalStateException;
 public class InitException extends IllegalStateException {
 
     public InitException() {
-        super("auto init failed ,you need call SoulPermission.init() in your application");
+        super("auto init failed ,you need invoke SoulPermission.init() in your application");
     }
 }

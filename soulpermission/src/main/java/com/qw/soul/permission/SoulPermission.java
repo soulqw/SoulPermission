@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Permissions;
 import com.qw.soul.permission.bean.Special;
@@ -16,6 +17,7 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener;
 import com.qw.soul.permission.callbcak.RequestPermissionListener;
 import com.qw.soul.permission.checker.CheckerFactory;
 import com.qw.soul.permission.debug.PermissionDebug;
+import com.qw.soul.permission.exception.ContainerStatusException;
 import com.qw.soul.permission.exception.InitException;
 import com.qw.soul.permission.request.PermissionRequester;
 
@@ -31,11 +33,11 @@ public class SoulPermission {
 
     private static SoulPermission instance;
 
-    private PermissionActivityLifecycle lifecycle;
-
     private static Application globalContext;
 
     private static boolean alreadyInit;
+
+    private PermissionActivityLifecycle lifecycle;
 
     /**
      * 获取 SoulPermission 对象
@@ -173,7 +175,10 @@ public class SoulPermission {
         try {
             result = getContainer();
         } catch (Exception e) {
-            PermissionDebug.e(TAG, e.toString());
+            if (PermissionDebug.isDebug()) {
+                PermissionTools.toast(getContext(), e.toString());
+                Log.e(TAG, e.toString());
+            }
         }
         return result;
     }
@@ -194,6 +199,7 @@ public class SoulPermission {
     }
 
     private SoulPermission() {
+
     }
 
     private void registerLifecycle(Application context) {
@@ -206,16 +212,19 @@ public class SoulPermission {
 
     /**
      * 获取栈顶Activity
+     *
+     * @return 当前应用栈顶Activity
+     * @throws InitException            初始化失败
+     * @throws ContainerStatusException Activity状态异常
      */
     private Activity getContainer() {
-        //check status
         // may auto init failed
         if (null == lifecycle || null == lifecycle.topActWeakReference) {
             throw new InitException();
         }
         // activity status error
         if (null == lifecycle.topActWeakReference.get() || lifecycle.topActWeakReference.get().isFinishing()) {
-            throw new IllegalStateException(" activity did not existence, check your app status before use soulPermission");
+            throw new ContainerStatusException();
         }
         PermissionDebug.d(TAG, "top activity is " + lifecycle.topActWeakReference.get().getClass().getSimpleName());
         return lifecycle.topActWeakReference.get();
@@ -248,29 +257,35 @@ public class SoulPermission {
         return CheckerFactory.create(context, permission).check();
     }
 
-    private void requestPermissions(Permissions permissions, final CheckRequestPermissionsListener listener) {
-        //get activity
-        Activity activity;
+    private void requestPermissions(final Permissions permissions, final CheckRequestPermissionsListener listener) {
+        //check container status
+        final Activity activity;
         try {
             activity = getContainer();
         } catch (Exception e) {
             //activity status error do not request
-            PermissionDebug.e(TAG, e.toString());
+            if (PermissionDebug.isDebug()) {
+                PermissionTools.toast(getContext(), e.toString());
+                Log.e(TAG, e.toString());
+            }
             return;
         }
-        requestRuntimePermission(activity, permissions.getPermissions(), listener);
-    }
-
-    private void requestRuntimePermission(final Activity activity, final Permission[] permissionsToRequest, final CheckRequestPermissionsListener listener) {
-        if (!PermissionTools.checkMainThread()) {
+        //check MainThread
+        if (!PermissionTools.assertMainThread()) {
+            PermissionDebug.w(TAG, "do not request permission in other thread");
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
-                    requestRuntimePermission(activity, permissionsToRequest, listener);
+                    requestPermissions(permissions, listener);
                 }
             });
             return;
         }
+        //finally request
+        requestRuntimePermission(activity, permissions.getPermissions(), listener);
+    }
+
+    private void requestRuntimePermission(final Activity activity, final Permission[] permissionsToRequest, final CheckRequestPermissionsListener listener) {
         PermissionDebug.d(TAG, "start to request permissions size= " + permissionsToRequest.length);
         new PermissionRequester(activity)
                 .withPermission(permissionsToRequest)
