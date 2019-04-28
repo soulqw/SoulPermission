@@ -1,18 +1,18 @@
 # SoulPermission
  [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 #### Android一行代码权限的更优解决方案：
- - 实现真正调用时请求的“真运行时权限”
- -  解耦Activity和Fragment、不再需要Context
- - 内部涵盖版本判断，一行代码封装权限请求和后续操作
- - 接入成本低，可以在公共方法中声明以后，无需在调用业务方写权限适配代码
- - 支持多项权限同时请求、支持系统权限页面跳转
+ -  解耦Activity和Fragment、不再需要Context、不再需要onPermissionResult
+ - 内部涵盖版本判断，一行代码解决权限相关操作，无需在调用业务方写权限适配代码，继而实现真正调用时请求的“真运行时权限”
+ - 接入成本低，零入侵，仅需要在gradle配置一行代码
+ - 支持多项权限同时请求
  - 支持检查通知权限
+ - 支持系统权限页面跳转
  - 支持debug模式
 ## Installation：
 
-```kotlin
+```java
 dependencies {
-     implementation 'com.qw:soulpermission:1.1.1'
+    implementation 'com.qw:soulpermission:1.1.2'
 }
 ```
 ## Usage：
