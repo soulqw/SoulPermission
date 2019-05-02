@@ -50,7 +50,19 @@ public class SoulPermission {
     }
 
     /**
+     * 设置debug
+     * 可见日志打印
+     * 当自动初始化失败后，有toast 提示
+     */
+    public static void setDebug(boolean isDebug) {
+        PermissionDebug.setDebug(isDebug);
+    }
+
+    /**
      * init
+     * no necessary
+     * invoke it when auto init failed
+     * @see #setDebug(boolean)
      */
     public static void init(@NonNull Application application) {
         if (alreadyInit) {
@@ -61,13 +73,6 @@ public class SoulPermission {
         getInstance().registerLifecycle(globalContext);
         alreadyInit = true;
         PermissionDebug.d(TAG, "user init");
-    }
-
-    /**
-     * 设置debug
-     */
-    public static void setDebug(boolean isDebug) {
-        PermissionDebug.setDebug(isDebug);
     }
 
     /**

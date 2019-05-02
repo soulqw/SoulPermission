@@ -33,7 +33,7 @@ public abstract class CheckPermissionWithRationaleAdapter implements CheckReques
         }
         //绿色框中的流程
         //用户第一次拒绝了权限、并且没有勾选"不再提示"这个值为true，此时告诉用户为什么需要这个权限。
-        if (permission.shouldRationale) {
+        if (permission.shouldRationale()) {
             new AlertDialog.Builder(activity)
                     .setTitle("提示")
                     .setMessage(rationaleMessage)

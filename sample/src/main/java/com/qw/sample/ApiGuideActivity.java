@@ -79,7 +79,7 @@ public class ApiGuideActivity extends AppCompatActivity {
                     @Override
                     public void onPermissionDenied(Permission permission) {
                         // see CheckPermissionWithRationaleAdapter
-                        if (permission.shouldRationale) {
+                        if (permission.shouldRationale()) {
                             Toast.makeText(ApiGuideActivity.this, permission.toString() +
                                     " \n you should show a explain for user then retry ", Toast.LENGTH_SHORT).show();
                         } else {

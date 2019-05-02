@@ -4,6 +4,7 @@
     <string name="permission_call">电话权限</string>
     <string name="permission_contact">通讯录权限</string>
     <string name="permission_storage">存储权限</string>
+    <string name="permission_phone_status">获取手机状态权限</string>
     <string name="permission_undefined">未知权限</string>
     <string name="permission_jump_failed">跳转失败，请自行前往设置中心设置</string>
 </resources>
