@@ -12,7 +12,7 @@
 
 ```java
 dependencies {
-    implementation 'com.qw:soulpermission:1.1.2'
+    implementation 'com.qw:soulpermission:1.1.3'
 }
 ```
 ## Usage：
@@ -72,7 +72,7 @@ dependencies {
                     @Override
                     public void onPermissionDenied(Permission permission) {
                         // see CheckPermissionWithRationaleAdapter
-                        if (permission.shouldRationale) {
+                        if (permission.shouldRationale()) {
                             Toast.makeText(ApiGuideActivity.this, permission.toString() +
                                     " \n you should show a explain for user then retry ", Toast.LENGTH_SHORT).show();
                         } else {
