@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -17,8 +18,6 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener;
 import com.qw.soul.permission.callbcak.RequestPermissionListener;
 import com.qw.soul.permission.checker.CheckerFactory;
 import com.qw.soul.permission.debug.PermissionDebug;
-import com.qw.soul.permission.exception.ContainerStatusException;
-import com.qw.soul.permission.exception.InitException;
 import com.qw.soul.permission.request.PermissionRequester;
 
 import java.util.LinkedList;
@@ -42,9 +41,13 @@ public class SoulPermission {
     /**
      * 获取 SoulPermission 对象
      */
-    public static synchronized SoulPermission getInstance() {
+    public static SoulPermission getInstance() {
         if (null == instance) {
-            instance = new SoulPermission();
+            synchronized (SoulPermission.class) {
+                if (instance == null) {
+                    instance = new SoulPermission();
+                }
+            }
         }
         return instance;
     }
@@ -62,6 +65,7 @@ public class SoulPermission {
      * init
      * no necessary
      * invoke it when auto init failed
+     *
      * @see #setDebug(boolean)
      */
     public static void init(@NonNull Application application) {
@@ -148,18 +152,20 @@ public class SoulPermission {
         Permission[] checkResult = checkPermissions(permissions.getPermissionsString());
         //get refused permissions
         final Permission[] refusedPermissionList = filterRefusedPermissions(checkResult);
-        if (refusedPermissionList.length > 0) {
-            //can request runTime permission
-            if (canRequestRunTimePermission()) {
-                requestPermissions(Permissions.build(refusedPermissionList), listener);
-            } else {
-                PermissionDebug.d(TAG, "some permission refused but can not request");
-                listener.onPermissionDenied(refusedPermissionList);
-            }
-        } else {
+        // all permissions ok
+        if (refusedPermissionList.length == 0) {
             PermissionDebug.d(TAG, "all permissions ok");
             listener.onAllPermissionOk(checkResult);
+            return;
         }
+        //can request runTime permission
+        if (canRequestRunTimePermission()) {
+            requestPermissions(Permissions.build(refusedPermissionList), listener);
+        } else {
+            PermissionDebug.d(TAG, "some permission refused but can not request");
+            listener.onPermissionDenied(refusedPermissionList);
+        }
+
     }
 
     /**
@@ -170,15 +176,16 @@ public class SoulPermission {
     }
 
     /**
-     * 提供当前栈顶Activity
+     * 提供当前栈顶可用的Activity
      *
      * @return the top Activity in your app
      */
     @Nullable
+    @CheckResult
     public Activity getTopActivity() {
         Activity result = null;
         try {
-            result = getContainer();
+            result = lifecycle.getActivity();
         } catch (Exception e) {
             if (PermissionDebug.isDebug()) {
                 PermissionTools.toast(getContext(), e.toString());
@@ -203,9 +210,7 @@ public class SoulPermission {
         registerLifecycle(globalContext);
     }
 
-    private SoulPermission() {
-
-    }
+    private SoulPermission() {}
 
     private void registerLifecycle(Application context) {
         if (null != lifecycle) {
@@ -213,26 +218,6 @@ public class SoulPermission {
         }
         lifecycle = new PermissionActivityLifecycle();
         context.registerActivityLifecycleCallbacks(lifecycle);
-    }
-
-    /**
-     * 获取栈顶Activity
-     *
-     * @return 当前应用栈顶Activity
-     * @throws InitException            初始化失败
-     * @throws ContainerStatusException Activity状态异常
-     */
-    private Activity getContainer() {
-        // may auto init failed
-        if (null == lifecycle || null == lifecycle.topActWeakReference) {
-            throw new InitException();
-        }
-        // activity status error
-        if (null == lifecycle.topActWeakReference.get() || lifecycle.topActWeakReference.get().isFinishing()) {
-            throw new ContainerStatusException();
-        }
-        PermissionDebug.d(TAG, "top activity is " + lifecycle.topActWeakReference.get().getClass().getSimpleName());
-        return lifecycle.topActWeakReference.get();
     }
 
     /**
@@ -266,7 +251,7 @@ public class SoulPermission {
         //check container status
         final Activity activity;
         try {
-            activity = getContainer();
+            activity = lifecycle.getActivity();
         } catch (Exception e) {
             //activity status error do not request
             if (PermissionDebug.isDebug()) {

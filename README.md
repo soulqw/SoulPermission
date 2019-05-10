@@ -12,7 +12,7 @@
 
 ```java
 dependencies {
-    implementation 'com.qw:soulpermission:1.1.3'
+    implementation 'com.qw:soulpermission:1.1.4'
 }
 ```
 ## Usage：

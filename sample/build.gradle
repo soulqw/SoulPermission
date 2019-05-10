@@ -7,7 +7,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 28
         versionCode 1
-        versionName "1.1.3"
+        versionName "1.1.4"
 
     }
     buildTypes {
@@ -22,6 +22,6 @@ android {
 
 dependencies {
 //    implementation project(':soulpermission')
-    implementation 'com.qw:soulpermission:1.1.3'
+    implementation 'com.qw:soulpermission:1.1.4'
     implementation 'com.android.support:appcompat-v7:28.0.0'
 }

@@ -26,14 +26,6 @@ public class Permission {
     public String permissionName;
 
     /**
-     * 是否需要给用户一个解释
-     *
-     * use method shouldRationale（） instead
-     */
-    @Deprecated
-    public boolean shouldRationale;
-
-    /**
      * 根据名称构建一个默认权限对象，默认失败
      *
      * @param permissionName 权限名称
@@ -53,7 +45,6 @@ public class Permission {
 
     public Permission(String permissionName, int isGranted, boolean shouldRationale) {
         this.permissionName = permissionName;
-        this.shouldRationale = shouldRationale;
         if (isGranted == PackageManager.PERMISSION_GRANTED) {
             mFlags |= FLAG_IS_GRANTED;
         }
