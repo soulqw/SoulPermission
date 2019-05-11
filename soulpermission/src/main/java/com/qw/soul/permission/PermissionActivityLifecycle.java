@@ -2,12 +2,14 @@ package com.qw.soul.permission;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.SparseArray;
+import com.qw.soul.permission.debug.PermissionDebug;
 import com.qw.soul.permission.exception.ContainerStatusException;
 import com.qw.soul.permission.exception.InitException;
 
-import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -15,7 +17,9 @@ import java.lang.ref.WeakReference;
  */
 public class PermissionActivityLifecycle implements Application.ActivityLifecycleCallbacks {
 
-    private SparseArray<WeakReference<Activity>> activities = new SparseArray<>();
+    private static final String TAG = PermissionActivityLifecycle.class.getSimpleName();
+
+    private List<Activity> activities = new ArrayList<>();
 
     /**
      * 获取可用Activity
@@ -24,22 +28,40 @@ public class PermissionActivityLifecycle implements Application.ActivityLifecycl
      * @throws InitException            初始化失败
      * @throws ContainerStatusException Activity状态异常
      */
-    public Activity getActivity() {
+    Activity getActivity() {
         if (null == activities || activities.size() == 0) {
             throw new InitException();
         }
+        PermissionDebug.d(TAG, "current activity stack:" + activities.toString());
         for (int i = activities.size() - 1; i >= 0; i--) {
-            WeakReference<Activity> activity = activities.valueAt(i);
-            if (null != activity.get() && !activity.get().isFinishing()) {
-                return activity.get();
+            Activity activity = activities.get(i);
+            if (isActivityAvailable(activity)) {
+                PermissionDebug.d(TAG, "top available activity is :" + activity.getClass().getSimpleName());
+                return activity;
             }
         }
         throw new ContainerStatusException();
     }
 
+    private boolean isActivityAvailable(Activity activity) {
+        if (null == activity) {
+            return false;
+        }
+        if (activity.isFinishing()) {
+            PermissionDebug.d(TAG, " activity is finishing :" + activity.getClass().getSimpleName());
+            return false;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && activity.isDestroyed()) {
+            PermissionDebug.d(TAG, " activity is destroyed :" + activity.getClass().getSimpleName());
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        activities.put(activity.hashCode(), new WeakReference<>(activity));
+        activities.add(activity);
+        PermissionDebug.d(TAG, "stack added:" + activity.getClass().getSimpleName());
     }
 
     @Override
@@ -67,6 +89,7 @@ public class PermissionActivityLifecycle implements Application.ActivityLifecycl
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        activities.remove(activity.hashCode());
+        activities.remove(activity);
+        PermissionDebug.d(TAG, "stack removed:" + activity.getClass().getSimpleName());
     }
 }
