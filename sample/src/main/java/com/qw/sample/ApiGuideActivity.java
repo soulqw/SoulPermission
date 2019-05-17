@@ -4,7 +4,9 @@ package com.qw.sample;
 import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -90,21 +92,44 @@ public class ApiGuideActivity extends AppCompatActivity {
                 });
     }
 
-    public void goSystemSettings(View view) {
+    public void goApplicationSettings(View view) {
         SoulPermission.getInstance().goPermissionSettings();
     }
 
     public void checkNotification(View view) {
-        boolean checkResult = SoulPermission.getInstance().checkSpecialPermission(Special.NOTIFICATION);
+            boolean checkResult = SoulPermission.getInstance().checkSpecialPermission(Special.NOTIFICATION);
+            if (checkResult) {
+                Toast.makeText(view.getContext(), "Notification is enable", Toast.LENGTH_LONG).show();
+            } else {
+                new AlertDialog.Builder(view.getContext())
+                        .setMessage("Notification is disable \n you may invoke goPermissionSettings and enable notification")
+                        .setPositiveButton("Set", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SoulPermission.getInstance().goPermissionSettings();
+                                dialog.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+    }
+
+    public void checkSystemAlert(View view) {
+        boolean checkResult = SoulPermission.getInstance().checkSpecialPermission(Special.SYSTEM_ALERT);
         if (checkResult) {
-            Toast.makeText(view.getContext(), "Notification is enable", Toast.LENGTH_LONG).show();
+            Toast.makeText(view.getContext(), "SystemAlert is enable", Toast.LENGTH_LONG).show();
         } else {
             new AlertDialog.Builder(view.getContext())
-                    .setMessage("Notification is disable \n you may invoke goPermissionSettings and enable notification")
+                    .setMessage("SystemAlert is disable ")
                     .setPositiveButton("Set", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            SoulPermission.getInstance().goPermissionSettings();
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                                startActivity(intent);
+                            }
+//                            SoulPermission.getInstance().goPermissionSettings();
                             dialog.dismiss();
                         }
                     })

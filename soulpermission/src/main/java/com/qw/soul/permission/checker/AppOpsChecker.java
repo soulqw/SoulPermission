@@ -80,7 +80,7 @@ class AppOpsChecker implements PermissionChecker {
             Method method = AppOpsManager.class.getDeclaredMethod("checkOp", int.class, int.class, String.class);
             return 0 == (int) method.invoke(manager, op, Binder.getCallingUid(), context.getPackageName());
         } catch (Exception e) {
-            PermissionDebug.e(TAG, e.toString());
+            PermissionDebug.w(TAG, e.toString());
             e.printStackTrace();
         }
         return true;

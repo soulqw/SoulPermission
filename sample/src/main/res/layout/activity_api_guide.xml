@@ -39,11 +39,11 @@
                 android:text=" for one permission with rationale"/>
 
         <Button
-                android:onClick="goSystemSettings"
+                android:onClick="goApplicationSettings"
                 android:textAllCaps="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="go system settings"/>
+                android:text="go application settings"/>
 
         <Button
                 android:onClick="checkNotification"
@@ -51,6 +51,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="checkSpecial[NotificationEnable]"/>
+        <Button
+                android:onClick="checkSystemAlert"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="checkSpecial[SystemAlert]"/>
 
         <Button
                 android:onClick="getTopActivity"

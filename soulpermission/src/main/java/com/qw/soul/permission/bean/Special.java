@@ -7,5 +7,10 @@ public enum Special {
     /**
      * 通知权限
      */
-    NOTIFICATION
+    NOTIFICATION,
+
+    /**
+     * 系统弹框
+     */
+    SYSTEM_ALERT
 }
