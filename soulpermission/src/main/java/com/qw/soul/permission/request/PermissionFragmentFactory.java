@@ -19,22 +19,24 @@ class PermissionFragmentFactory {
         if (activity instanceof FragmentActivity) {
             FragmentManager supportFragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
             PermissionSupportFragment permissionSupportFragment = (PermissionSupportFragment) supportFragmentManager.findFragmentByTag(FRAGMENT_TAG);
-            if (null == permissionSupportFragment) {
-                permissionSupportFragment = new PermissionSupportFragment();
-                supportFragmentManager.beginTransaction()
-                        .add(permissionSupportFragment, FRAGMENT_TAG)
-                        .commitNowAllowingStateLoss();
+            android.support.v4.app.FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+            if (permissionSupportFragment != null) { // 如果已存在PermissionFragment的实例，先将它移除，然后再添加新的
+                transaction.remove(permissionSupportFragment);
             }
+            permissionSupportFragment = new PermissionSupportFragment();
+            transaction.add(permissionSupportFragment, FRAGMENT_TAG);
+            transaction.commitAllowingStateLoss();
             action = permissionSupportFragment;
         } else {
             android.app.FragmentManager fragmentManager = activity.getFragmentManager();
             PermissionFragment permissionFragment = (PermissionFragment) fragmentManager.findFragmentByTag(FRAGMENT_TAG);
-            if (null == permissionFragment) {
-                permissionFragment = new PermissionFragment();
-                activity.getFragmentManager().beginTransaction()
-                        .add(permissionFragment, FRAGMENT_TAG)
-                        .commitAllowingStateLoss();
+            android.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
+            if (permissionFragment != null) { // 如果已存在PermissionFragment的实例，先将它移除，然后再添加新的
+                transaction.remove(permissionFragment);
             }
+            permissionFragment = new PermissionFragment();
+            transaction.add(permissionFragment, FRAGMENT_TAG);
+            transaction.commitAllowingStateLoss();
             action = permissionFragment;
         }
         return action;
