@@ -2,7 +2,6 @@ package com.qw.soul.permission;
 
 import android.app.Activity;
 import android.app.Application;
-import android.os.Build;
 import android.os.Bundle;
 import com.qw.soul.permission.debug.PermissionDebug;
 import com.qw.soul.permission.exception.ContainerStatusException;
@@ -35,27 +34,12 @@ public class PermissionActivityLifecycle implements Application.ActivityLifecycl
         PermissionDebug.d(TAG, "current activity stack:" + activities.toString());
         for (int i = activities.size() - 1; i >= 0; i--) {
             Activity activity = activities.get(i);
-            if (isActivityAvailable(activity)) {
+            if (PermissionTools.isActivityAvailable(activity)) {
                 PermissionDebug.d(TAG, "top available activity is :" + activity.getClass().getSimpleName());
                 return activity;
             }
         }
         throw new ContainerStatusException();
-    }
-
-    private boolean isActivityAvailable(Activity activity) {
-        if (null == activity) {
-            return false;
-        }
-        if (activity.isFinishing()) {
-            PermissionDebug.d(TAG, " activity is finishing :" + activity.getClass().getSimpleName());
-            return false;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && activity.isDestroyed()) {
-            PermissionDebug.d(TAG, " activity is destroyed :" + activity.getClass().getSimpleName());
-            return false;
-        }
-        return true;
     }
 
     @Override

@@ -2,9 +2,10 @@ package com.qw.soul.permission.request;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-
 import com.qw.soul.permission.bean.Permission;
+import com.qw.soul.permission.bean.Special;
 import com.qw.soul.permission.callbcak.RequestPermissionListener;
+import com.qw.soul.permission.callbcak.SpecialPermissionListener;
 import com.qw.soul.permission.request.fragment.FragmentProxy;
 
 import static android.os.Build.VERSION_CODES.M;
@@ -19,6 +20,8 @@ public class PermissionRequester {
     private FragmentProxy permissionFragment;
 
     private String[] permissions;
+
+    private Special permissionSpecial;
 
     public PermissionRequester(Activity activity) {
         this.permissionFragment = new FragmentProxy(PermissionFragmentFactory.create(activity));
@@ -45,11 +48,35 @@ public class PermissionRequester {
         return this;
     }
 
+    /**
+     * 特殊权限
+     *
+     * @param permissionSpecial 特殊权限
+     *                          {@link com.qw.soul.permission.bean.Special }
+     */
+    public PermissionRequester withPermission(Special permissionSpecial) {
+        this.permissionSpecial = permissionSpecial;
+        return this;
+    }
+
+    /**
+     * 请求运行时权限
+     */
     @TargetApi(M)
     public void request(RequestPermissionListener listener) {
         if (permissionFragment == null || permissions == null) {
-            throw new IllegalArgumentException("fragment or permission is null");
+            throw new IllegalArgumentException("fragment or params permission is null");
         }
         permissionFragment.requestPermissions(permissions, listener);
+    }
+
+    /**
+     * 请求特殊权限
+     */
+    public void request(SpecialPermissionListener listener) {
+        if (permissionFragment == null || permissionSpecial == null) {
+            throw new IllegalArgumentException("fragment or params special permission is null");
+        }
+        permissionFragment.requestSpecialPermission(permissionSpecial, listener);
     }
 }

@@ -70,6 +70,9 @@ class AppOpsChecker implements PermissionChecker {
         return true;
     }
 
+    /**
+     * check by reflect
+     */
     boolean checkOp(int op) {
         if (Build.VERSION.SDK_INT < KITKAT) {
             PermissionDebug.d(TAG, "4.4 below");

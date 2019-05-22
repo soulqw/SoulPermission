@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.CheckResult;
@@ -13,15 +14,16 @@ import android.util.Log;
 import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Permissions;
 import com.qw.soul.permission.bean.Special;
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener;
-import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener;
-import com.qw.soul.permission.callbcak.RequestPermissionListener;
+import com.qw.soul.permission.callbcak.*;
 import com.qw.soul.permission.checker.CheckerFactory;
 import com.qw.soul.permission.debug.PermissionDebug;
 import com.qw.soul.permission.request.PermissionRequester;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static android.os.Build.VERSION_CODES.KITKAT;
+import static android.os.Build.VERSION_CODES.O;
 
 /**
  * @author cd5160866
@@ -169,6 +171,39 @@ public class SoulPermission {
     }
 
     /**
+     * 检查和请求特殊权限
+     *
+     * @param special  特殊权限、系统弹窗，未知来源
+     *                 {@link com.qw.soul.permission.bean.Special }
+     * @param listener 请求回调
+     */
+    public void checkAndRequestPermission(@NonNull Special special, @NonNull SpecialPermissionListener listener) {
+        boolean permissionResult = checkSpecialPermission(special);
+        if (permissionResult) {
+            listener.onGranted(special);
+            return;
+        }
+        int currentOsVersion = Build.VERSION.SDK_INT;
+        switch (special) {
+            case UNKNOWN_APP_SOURCES:
+                if (currentOsVersion < O) {
+                    listener.onDenied(special);
+                    return;
+                }
+                break;
+            case SYSTEM_ALERT:
+            case NOTIFICATION:
+            default:
+                if (currentOsVersion < KITKAT) {
+                    listener.onDenied(special);
+                    return;
+                }
+                break;
+        }
+        requestSpecialPermission(special, listener);
+    }
+
+    /**
      * 获得全局applicationContext
      */
     public Context getContext() {
@@ -210,7 +245,8 @@ public class SoulPermission {
         registerLifecycle(globalContext);
     }
 
-    private SoulPermission() {}
+    private SoulPermission() {
+    }
 
     private void registerLifecycle(Application context) {
         if (null != lifecycle) {
@@ -247,7 +283,7 @@ public class SoulPermission {
         return CheckerFactory.create(context, permission).check();
     }
 
-    private void requestPermissions(final Permissions permissions, final CheckRequestPermissionsListener listener) {
+    private void checkStatusBeforeDoSomething(final CheckStatusCallBack callBack) {
         //check container status
         final Activity activity;
         try {
@@ -258,6 +294,7 @@ public class SoulPermission {
                 PermissionTools.toast(getContext(), e.toString());
                 Log.e(TAG, e.toString());
             }
+            callBack.onStatusError();
             return;
         }
         //check MainThread
@@ -266,13 +303,27 @@ public class SoulPermission {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
-                    requestPermissions(permissions, listener);
+                    callBack.onStatusOk(activity);
                 }
             });
             return;
         }
-        //finally request
-        requestRuntimePermission(activity, permissions.getPermissions(), listener);
+        //can do
+        callBack.onStatusOk(activity);
+    }
+
+    private void requestPermissions(final Permissions permissions, final CheckRequestPermissionsListener listener) {
+        checkStatusBeforeDoSomething(new CheckStatusCallBack() {
+            @Override
+            public void onStatusOk(Activity activity) {
+                requestRuntimePermission(activity, permissions.getPermissions(), listener);
+            }
+
+            @Override
+            public void onStatusError() {
+                //do nothing
+            }
+        });
     }
 
     private void requestRuntimePermission(final Activity activity, final Permission[] permissionsToRequest, final CheckRequestPermissionsListener listener) {
@@ -298,6 +349,23 @@ public class SoulPermission {
                         }
                     }
                 });
+    }
+
+    private void requestSpecialPermission(final Special specialPermission, final SpecialPermissionListener listener) {
+        checkStatusBeforeDoSomething(new CheckStatusCallBack() {
+            @Override
+            public void onStatusOk(Activity activity) {
+                new PermissionRequester(activity)
+                        .withPermission(specialPermission)
+                        .request(listener);
+            }
+
+            @Override
+            public void onStatusError() {
+                //do nothing
+            }
+        });
+
     }
 
 }

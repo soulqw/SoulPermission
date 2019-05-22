@@ -12,5 +12,11 @@ public enum Special {
     /**
      * 系统弹框
      */
-    SYSTEM_ALERT
+    SYSTEM_ALERT,
+
+    /**
+     * 允许安装未知权限
+     */
+    UNKNOWN_APP_SOURCES
+
 }

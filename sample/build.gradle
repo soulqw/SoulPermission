@@ -6,8 +6,8 @@ android {
         applicationId "com.qw.sample"
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.1.5"
+        versionCode 2
+        versionName "1.1.6"
 
     }
     buildTypes {
@@ -21,7 +21,7 @@ android {
 
 
 dependencies {
-    implementation project(':soulpermission')
-//    implementation 'com.qw:soulpermission:1.1.4'
+//    implementation project(':soulpermission')
+    implementation 'com.qw:soulpermission:1.1.6'
     implementation 'com.android.support:appcompat-v7:28.0.0'
 }

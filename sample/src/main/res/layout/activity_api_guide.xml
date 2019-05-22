@@ -13,6 +13,7 @@
         <Button
                 android:onClick="checkSinglePermission"
                 android:textAllCaps="false"
+                android:gravity="start|center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/bt_call"
@@ -20,6 +21,7 @@
         <Button
                 android:onClick="requestSinglePermission"
                 android:textAllCaps="false"
+                android:gravity="start|center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=" for one permission"/>
@@ -27,6 +29,7 @@
         <Button
                 android:onClick="requestPermissions"
                 android:textAllCaps="false"
+                android:gravity="start|center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=" for a series of permissions"/>
@@ -34,33 +37,55 @@
         <Button
                 android:onClick="requestSinglePermissionWithRationale"
                 android:textAllCaps="false"
+                android:gravity="start|center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=" for one permission with rationale"/>
 
         <Button
+                android:onClick="checkNotification"
+                android:textAllCaps="false"
+                android:gravity="start|center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="checkSpecial[Notification]"/>
+
+        <Button
+                android:onClick="checkAndRequestNotification"
+                android:textAllCaps="false"
+                android:gravity="start|center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="for Special[Notification]"/>
+
+        <Button
+                android:onClick="checkAndRequestSystemAlert"
+                android:textAllCaps="false"
+                android:gravity="start|center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="for Special[SystemAlert]"/>
+
+        <Button
+                android:onClick="checkAndRequestUnKnownSource"
+                android:textAllCaps="false"
+                android:gravity="start|center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="for Special[InstallUnknownSource]"/>
+
+        <Button
                 android:onClick="goApplicationSettings"
                 android:textAllCaps="false"
+                android:gravity="start|center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="go application settings"/>
 
         <Button
-                android:onClick="checkNotification"
-                android:textAllCaps="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="checkSpecial[NotificationEnable]"/>
-        <Button
-                android:onClick="checkSystemAlert"
-                android:textAllCaps="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="checkSpecial[SystemAlert]"/>
-
-        <Button
                 android:onClick="getTopActivity"
                 android:textAllCaps="false"
+                android:gravity="start|center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="get top activity"/>
