@@ -1,19 +1,20 @@
 # SoulPermission
  [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-#### Android一行代码权限的更优解决方案：
+#### Android权限适配的更优解决方案：
  -  解耦Activity和Fragment、不再需要Context、不再需要onPermissionResult
  - 内部涵盖版本判断，一行代码解决权限相关操作，无需在调用业务方写权限适配代码，继而实现真正调用时请求的“真运行时权限”
  - 接入成本低，零入侵，仅需要在gradle配置一行代码
  - 支持多项权限同时请求
- - 支持检查通知权限
+ - 支持特殊权限(Notification[通知]、SystemAlert[应用悬浮窗]、UnknownAppSource[未知来源应用安装])的检查与请求
  - 支持系统权限页面跳转
  - 支持debug模式
 ## Installation：
 
 ```java
 dependencies {
-    implementation 'com.qw:soulpermission:1.1.5'
+    implementation 'com.qw:soulpermission:1.1.6'
 }
+
 ```
 ## Usage：
 
@@ -94,6 +95,22 @@ Permission checkResult = SoulPermission.getInstance().checkSinglePermission(Mani
 ```java
  boolean checkResult = SoulPermission.getInstance().checkSpecialPermission(Special.NOTIFICATION);
 ```
+- 检查并请求特殊权限[未知应用安装]
+
+```java
+ //if you want do noting or no need all the callbacks you may use SimpleSpecialPermissionAdapter instead
+    SoulPermission.getInstance().checkAndRequestPermission(Special.UNKNOWN_APP_SOURCES, new SpecialPermissionListener() {
+        @Override
+        public void onGranted(Special permission) {
+                Toast.makeText(ApiGuideActivity.this, "install unKnown app  is enable now", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onDenied(Special permission) {
+                Toast.makeText(ApiGuideActivity.this, "install unKnown app  is disable yet", Toast.LENGTH_SHORT).show();
+        }
+    });
+```
 
 - 跳转到应用设置页
 
@@ -126,7 +143,14 @@ public class SimpleApplication extends Application {
 - 如果需要在某个页面创建时候请求权限，请在onCreate()中使用、请不要在onResume()调用，否则权限未被动态授予前会陷入死循环。
 ### Screenshot：
 ![image](https://img-blog.csdnimg.cn/2019042223014322.png)
-![image](https://img-blog.csdnimg.cn/20190424225824139.png)
+![image](https://img-blog.csdnimg.cn/20190522171928597.png)
+- for common Permission
+
+![image](https://img-blog.csdnimg.cn/20190522172649778.gif)
+
+- for Special Permission
+
+![image](https://img-blog.csdnimg.cn/20190522171642336.gif)
 
 ### MoreDetail：
 #### [工作原理和最佳示例](https://blog.csdn.net/u014626094/article/details/89438614)
