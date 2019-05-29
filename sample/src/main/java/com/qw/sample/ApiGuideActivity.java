@@ -3,11 +3,14 @@ package com.qw.sample;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import com.qw.sample.utils.Utils;
+import com.qw.soul.permission.Constants;
 import com.qw.soul.permission.SoulPermission;
 import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Permissions;
@@ -141,7 +144,7 @@ public class ApiGuideActivity extends AppCompatActivity {
     }
 
     public void goApplicationSettings(View view) {
-        SoulPermission.getInstance().goPermissionSettings();
+        SoulPermission.getInstance().goApplicationSettings();
     }
 
     public void getTopActivity(View view) {
@@ -151,4 +154,11 @@ public class ApiGuideActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.DEFAULT_CODE_APPLICATION_SETTINGS) {
+            Utils.showMessage(findViewById(R.id.content), "onActivityResult from goApplicationSettings");
+        }
+    }
 }

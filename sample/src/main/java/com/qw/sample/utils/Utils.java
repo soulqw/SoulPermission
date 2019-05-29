@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Toast;
 import com.qw.soul.permission.SoulPermission;
@@ -47,6 +48,19 @@ public class Utils {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         context.startActivity(intent);
+    }
+
+    /**
+     * 读取手机状态
+     *
+     * @param context
+     */
+    public String readPhoneStatus(Context context) {
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (tm == null) {
+            return "";
+        }
+        return "phone " + tm.getLine1Number() + "\nime" + tm.getImei() + "\nsimSerialNumber" + tm.getSimSerialNumber();
     }
 
     /**

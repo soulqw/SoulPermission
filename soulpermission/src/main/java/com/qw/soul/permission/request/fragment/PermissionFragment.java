@@ -74,11 +74,14 @@ public class PermissionFragment extends Fragment implements IPermissionActions {
         super.onAttach(context);
         isContainerAlready = true;
         //request Runtime
-        if (isRequestRunTimePermission) {
+        if (isRequestRunTimePermission && null != permissions) {
             requestPermissions(permissions, Constants.REQUEST_CODE_PERMISSION);
             return;
         }
         //request special
+        if (null == specialToRequest) {
+            return;
+        }
         requestPermissionSpecial();
     }
 
@@ -93,7 +96,7 @@ public class PermissionFragment extends Fragment implements IPermissionActions {
                 permissionResults[i] = permission;
             }
         }
-        if (runtimeListener != null && PermissionTools.isActivityAvailable(getActivity())) {
+        if (null != runtimeListener && PermissionTools.isActivityAvailable(getActivity())) {
             runtimeListener.onPermissionResult(permissionResults);
         }
     }
@@ -102,7 +105,7 @@ public class PermissionFragment extends Fragment implements IPermissionActions {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Activity activity = getActivity();
-        if (specialListener == null || !PermissionTools.isActivityAvailable(activity)) {
+        if (null == specialListener || !PermissionTools.isActivityAvailable(activity)) {
             return;
         }
         if (requestCode == Constants.REQUEST_CODE_PERMISSION_SPECIAL) {

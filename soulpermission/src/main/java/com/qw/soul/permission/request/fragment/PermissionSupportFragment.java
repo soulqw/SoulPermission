@@ -81,7 +81,7 @@ public class PermissionSupportFragment extends Fragment implements IPermissionAc
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Activity activity = getActivity();
-        if (specialListener == null || !PermissionTools.isActivityAvailable(activity)) {
+        if (null == specialListener || !PermissionTools.isActivityAvailable(activity)) {
             return;
         }
         if (requestCode == Constants.REQUEST_CODE_PERMISSION_SPECIAL) {

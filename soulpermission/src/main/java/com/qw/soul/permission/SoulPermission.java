@@ -241,10 +241,33 @@ public class SoulPermission {
     }
 
     /**
-     * 到系统权限设置页，已经适配部分手机系统，逐步更新
+     * 到系统权限设置页
+     * 鉴于碎片化太严重，1.1.7去掉厂商页面，统一跳应用详情页
+     * 请使用新的方法
+     *
+     * @see #goApplicationSettings()
      */
+    @Deprecated
     public void goPermissionSettings() {
-        PermissionTools.jumpPermissionPage(getContext());
+        goApplicationSettings();
+    }
+
+    /**
+     * 跳转到应用详情页面
+     * use default requestCode: Constants.DEFAULT_CODE_APPLICATION_SETTINGS
+     * {@link com.qw.soul.permission.Constants }
+     */
+    public void goApplicationSettings() {
+        goApplicationSettings(Constants.DEFAULT_CODE_APPLICATION_SETTINGS);
+    }
+
+    /**
+     * 跳转到应用详情页
+     *
+     * @param requestCode 可自定义requestCode方便自己在回调中处理
+     */
+    public void goApplicationSettings(int requestCode) {
+        PermissionTools.jumpAppDetail(getTopActivity(), requestCode);
     }
 
     void autoInit(Application application) {

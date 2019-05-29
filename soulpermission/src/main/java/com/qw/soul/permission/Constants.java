@@ -8,11 +8,16 @@ public interface Constants {
     /**
      * request code for run time permission
      */
-    int REQUEST_CODE_PERMISSION = 10010;
+    int REQUEST_CODE_PERMISSION = 1 << 10;
 
     /**
      * request code for special permission
      */
-    int REQUEST_CODE_PERMISSION_SPECIAL = 10086;
+    int REQUEST_CODE_PERMISSION_SPECIAL = 1 << 11;
+
+    /**
+     * default request code for jump application settings
+     */
+    int DEFAULT_CODE_APPLICATION_SETTINGS = 1 << 12;
 
 }
