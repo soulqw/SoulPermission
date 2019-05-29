@@ -7,6 +7,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.Toast;
+import com.qw.soul.permission.SoulPermission;
+import com.qw.soul.permission.bean.Special;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,6 +22,19 @@ import java.util.List;
  * @author cd5160866
  */
 public class Utils {
+
+    public static void showMessage(View view, final String message) {
+        boolean isNotificationCanShow = SoulPermission.getInstance().checkSpecialPermission(Special.NOTIFICATION);
+        //通知权限可用Toast才能展示出来
+        if (isNotificationCanShow) {
+            Toast.makeText(view.getContext(), message, Toast.LENGTH_SHORT).show();
+        } else {
+            new AlertDialog.Builder(view.getContext())
+                    .setMessage(message)
+                    .setPositiveButton("OK", null)
+                    .create().show();
+        }
+    }
 
     /**
      * 拨打指定电话

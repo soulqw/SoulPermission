@@ -80,7 +80,7 @@ public class Permission {
     public String getPermissionNameDesc() {
         Context context = SoulPermission.getInstance().getContext();
         if (null == context) {
-            PermissionDebug.e(TAG, "soul permission do not inited");
+            PermissionDebug.e(TAG, "soul permission do not init");
             return "";
         }
         String desc;
@@ -97,6 +97,11 @@ public class Permission {
                 break;
             case Manifest.permission_group.PHONE:
             case Manifest.permission.CALL_PHONE:
+            case Manifest.permission.READ_CALL_LOG:
+            case Manifest.permission.WRITE_CALL_LOG:
+            case Manifest.permission.ADD_VOICEMAIL:
+            case Manifest.permission.USE_SIP:
+            case Manifest.permission.PROCESS_OUTGOING_CALLS:
                 desc = context.getResources().getString(R.string.permission_call);
                 break;
             case Manifest.permission_group.STORAGE:
@@ -111,6 +116,27 @@ public class Permission {
                 break;
             case Manifest.permission.READ_PHONE_STATE:
                 desc = context.getResources().getString(R.string.permission_phone_status);
+                break;
+            case Manifest.permission_group.CALENDAR:
+            case Manifest.permission.READ_CALENDAR:
+            case Manifest.permission.WRITE_CALENDAR:
+                desc = context.getResources().getString(R.string.permission_calender);
+                break;
+            case Manifest.permission_group.MICROPHONE:
+            case Manifest.permission.RECORD_AUDIO:
+                desc = context.getResources().getString(R.string.permission_microphone);
+                break;
+            case Manifest.permission_group.SENSORS:
+            case Manifest.permission.BODY_SENSORS:
+                desc = context.getResources().getString(R.string.permission_sensor);
+                break;
+            case Manifest.permission_group.SMS:
+            case Manifest.permission.SEND_SMS:
+            case Manifest.permission.RECEIVE_SMS:
+            case Manifest.permission.READ_SMS:
+            case Manifest.permission.RECEIVE_WAP_PUSH:
+            case Manifest.permission.RECEIVE_MMS:
+                desc = context.getResources().getString(R.string.permission_sms);
                 break;
             default:
                 desc = context.getResources().getString(R.string.permission_undefined);

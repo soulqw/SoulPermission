@@ -8,8 +8,10 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.CheckResult;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Permissions;
@@ -100,11 +102,16 @@ public class SoulPermission {
      */
     public Permission[] checkPermissions(@NonNull String... permissions) {
         List<Permission> resultPermissions = new LinkedList<>();
+        Activity activity = getTopActivity();
         for (String permission : permissions) {
             int isGranted = checkPermission(getContext(), permission)
                     ? PackageManager.PERMISSION_GRANTED
                     : PackageManager.PERMISSION_DENIED;
-            resultPermissions.add(new Permission(permission, isGranted, false));
+            boolean shouldRationale = false;
+            if (null != activity) {
+                shouldRationale = ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
+            }
+            resultPermissions.add(new Permission(permission, isGranted, shouldRationale));
         }
         return PermissionTools.convert(resultPermissions);
     }
@@ -128,6 +135,7 @@ public class SoulPermission {
      * @param listener       请求之后的回调
      * @see #checkAndRequestPermissions
      */
+    @MainThread
     public void checkAndRequestPermission(@NonNull final String permissionName, @NonNull final CheckRequestPermissionListener listener) {
         checkAndRequestPermissions(Permissions.build(permissionName), new CheckRequestPermissionsListener() {
             @Override
@@ -149,6 +157,7 @@ public class SoulPermission {
      * @param permissions 多个权限的申请  Permissions.build(Manifest.permission.CALL_PHONE,Manifest.permission.CAMERA)
      * @param listener    请求之后的回调
      */
+    @MainThread
     public void checkAndRequestPermissions(@NonNull Permissions permissions, @NonNull final CheckRequestPermissionsListener listener) {
         //check permission first
         Permission[] checkResult = checkPermissions(permissions.getPermissionsString());
@@ -177,6 +186,7 @@ public class SoulPermission {
      *                 {@link com.qw.soul.permission.bean.Special }
      * @param listener 请求回调
      */
+    @MainThread
     public void checkAndRequestPermission(@NonNull Special special, @NonNull SpecialPermissionListener listener) {
         boolean permissionResult = checkSpecialPermission(special);
         if (permissionResult) {

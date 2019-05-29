@@ -4,10 +4,10 @@ package com.qw.sample;
 import android.Manifest;
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
+import com.qw.sample.utils.Utils;
 import com.qw.soul.permission.SoulPermission;
 import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Permissions;
@@ -27,64 +27,57 @@ public class ApiGuideActivity extends AppCompatActivity {
     public void checkSinglePermission(View view) {
         //you can also use checkPermissions() for a series of permissions
         Permission checkResult = SoulPermission.getInstance().checkSinglePermission(Manifest.permission.ACCESS_FINE_LOCATION);
-        Toast.makeText(this, checkResult.toString(), Toast.LENGTH_SHORT).show();
+        Utils.showMessage(view, checkResult.toString());
     }
 
-    public void requestSinglePermission(View view) {
+    public void requestSinglePermission(final View view) {
         SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION,
                 //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
                 new CheckRequestPermissionListener() {
                     @Override
                     public void onPermissionOk(Permission permission) {
-                        Toast.makeText(ApiGuideActivity.this, permission.toString() +
-                                "\n is ok , you can do your operations", Toast.LENGTH_SHORT).show();
+                        Utils.showMessage(view, permission.toString() + "\n is ok , you can do your operations");
                     }
 
                     @Override
                     public void onPermissionDenied(Permission permission) {
-                        Toast.makeText(ApiGuideActivity.this, permission.toString() +
-                                " \n is refused you can not do next things", Toast.LENGTH_SHORT).show();
+                        Utils.showMessage(view, permission.toString() + " \n is refused you can not do next things");
                     }
                 });
     }
 
-    public void requestPermissions(View view) {
+    public void requestPermissions(final View view) {
         SoulPermission.getInstance().checkAndRequestPermissions(
                 Permissions.build(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE),
                 //if you want do noting or no need all the callbacks you may use SimplePermissionsAdapter instead
                 new CheckRequestPermissionsListener() {
                     @Override
                     public void onAllPermissionOk(Permission[] allPermissions) {
-                        Toast.makeText(ApiGuideActivity.this, allPermissions.length + "permissions is ok" +
-                                " \n  you can do your operations", Toast.LENGTH_SHORT).show();
+                        Utils.showMessage(view, allPermissions.length + "permissions is ok" + " \n  you can do your operations");
                     }
 
                     @Override
                     public void onPermissionDenied(Permission[] refusedPermissions) {
-                        Toast.makeText(ApiGuideActivity.this, refusedPermissions[0].toString() +
-                                " \n is refused you can not do next things", Toast.LENGTH_SHORT).show();
+                        Utils.showMessage(view, refusedPermissions[0].toString() + " \n is refused you can not do next things");
                     }
                 });
     }
 
-    public void requestSinglePermissionWithRationale(View view) {
+    public void requestSinglePermissionWithRationale(final View view) {
         SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.READ_CONTACTS,
                 new CheckRequestPermissionListener() {
                     @Override
                     public void onPermissionOk(Permission permission) {
-                        Toast.makeText(ApiGuideActivity.this, permission.toString() +
-                                "\n is ok , you can do your operations", Toast.LENGTH_SHORT).show();
+                        Utils.showMessage(view, permission.toString() + "\n is ok , you can do your operations");
                     }
 
                     @Override
                     public void onPermissionDenied(Permission permission) {
                         // see CheckPermissionWithRationaleAdapter
                         if (permission.shouldRationale()) {
-                            Toast.makeText(ApiGuideActivity.this, permission.toString() +
-                                    " \n you should show a explain for user then retry ", Toast.LENGTH_SHORT).show();
+                            Utils.showMessage(view, permission.toString() + " \n you should show a explain for user then retry ");
                         } else {
-                            Toast.makeText(ApiGuideActivity.this, permission.toString() +
-                                    " \n is refused you can not do next things", Toast.LENGTH_SHORT).show();
+                            Utils.showMessage(view, permission.toString() + " \n is refused you can not do next things");
                         }
                     }
                 });
@@ -92,15 +85,8 @@ public class ApiGuideActivity extends AppCompatActivity {
 
     public void checkNotification(View view) {
         boolean checkResult = SoulPermission.getInstance().checkSpecialPermission(Special.NOTIFICATION);
-        if (checkResult) {
-            Toast.makeText(view.getContext(), "Notification is enable", Toast.LENGTH_SHORT).show();
-        } else {
-            new AlertDialog.Builder(view.getContext())
-                    .setMessage("Notification is disable \n you may invoke checkAndRequestPermission and enable notification")
-                    .setPositiveButton("OK", null)
-                    .create()
-                    .show();
-        }
+        Utils.showMessage(view, checkResult ? "Notification is enable" :
+                "Notification is disable \n you may invoke checkAndRequestPermission and enable notification");
     }
 
     public void checkAndRequestNotification(final View view) {
@@ -108,46 +94,48 @@ public class ApiGuideActivity extends AppCompatActivity {
         SoulPermission.getInstance().checkAndRequestPermission(Special.NOTIFICATION, new SpecialPermissionListener() {
             @Override
             public void onGranted(Special permission) {
-                Toast.makeText(ApiGuideActivity.this, "Notification is enable now ", Toast.LENGTH_SHORT).show();
+                Utils.showMessage(view, "Notification is enable now ");
             }
 
             @Override
             public void onDenied(Special permission) {
-                new AlertDialog.Builder(view.getContext())
-                        .setMessage("Notification is disable \n you may invoke checkAndRequestPermission and enable notification")
-                        .setPositiveButton("OK", null)
-                        .create()
-                        .show();
+                Snackbar.make(view, "Notification is disable yet ", Snackbar.LENGTH_LONG)
+                        .setAction("retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                checkAndRequestNotification(v);
+                            }
+                        }).show();
             }
         });
     }
 
-    public void checkAndRequestSystemAlert(View view) {
+    public void checkAndRequestSystemAlert(final View view) {
         //if you want do noting or no need all the callbacks you may use SimpleSpecialPermissionAdapter instead
         SoulPermission.getInstance().checkAndRequestPermission(Special.SYSTEM_ALERT, new SpecialPermissionListener() {
             @Override
             public void onGranted(Special permission) {
-                Toast.makeText(ApiGuideActivity.this, "System Alert is enable now ", Toast.LENGTH_SHORT).show();
+                Utils.showMessage(view, "System Alert is enable now ");
             }
 
             @Override
             public void onDenied(Special permission) {
-                Toast.makeText(ApiGuideActivity.this, "System Alert is disable yet", Toast.LENGTH_SHORT).show();
+                Utils.showMessage(view, "System Alert is disable yet ");
             }
         });
     }
 
-    public void checkAndRequestUnKnownSource(View view) {
+    public void checkAndRequestUnKnownSource(final View view) {
         //if you want do noting or no need all the callbacks you may use SimpleSpecialPermissionAdapter instead
         SoulPermission.getInstance().checkAndRequestPermission(Special.UNKNOWN_APP_SOURCES, new SpecialPermissionListener() {
             @Override
             public void onGranted(Special permission) {
-                Toast.makeText(ApiGuideActivity.this, "install unKnown app  is enable now", Toast.LENGTH_SHORT).show();
+                Utils.showMessage(view, "install unKnown app  is enable now ");
             }
 
             @Override
             public void onDenied(Special permission) {
-                Toast.makeText(ApiGuideActivity.this, "install unKnown app  is disable yet", Toast.LENGTH_SHORT).show();
+                Utils.showMessage(view, "install unKnown app  is disable yet");
             }
         });
     }
@@ -159,7 +147,7 @@ public class ApiGuideActivity extends AppCompatActivity {
     public void getTopActivity(View view) {
         Activity activity = SoulPermission.getInstance().getTopActivity();
         if (null != activity) {
-            Toast.makeText(activity, activity.getClass().getSimpleName() + " " + activity.hashCode(), Toast.LENGTH_SHORT).show();
+            Utils.showMessage(view, activity.getClass().getSimpleName() + " " + activity.hashCode());
         }
     }
 
