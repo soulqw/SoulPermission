@@ -62,8 +62,23 @@ class AppOpsChecker implements PermissionChecker {
             case Manifest.permission.WRITE_EXTERNAL_STORAGE:
                 return checkOp(60);
             case Manifest.permission.ACCESS_FINE_LOCATION:
+                return checkOp(1);
             case Manifest.permission.ACCESS_COARSE_LOCATION:
-                return checkOp(2);
+                return checkOp(0);
+            case Manifest.permission.RECORD_AUDIO:
+                return checkOp(27);
+            case Manifest.permission.BODY_SENSORS:
+                return checkOp(56);
+            case Manifest.permission.READ_CALENDAR:
+                return checkOp(8);
+            case Manifest.permission.WRITE_CALENDAR:
+                return checkOp(9);
+            case Manifest.permission.SEND_SMS:
+                return checkOp(20);
+            case Manifest.permission.READ_SMS:
+                return checkOp(14);
+            case Manifest.permission.RECEIVE_SMS:
+                return checkOp(16);
             default:
                 break;
         }

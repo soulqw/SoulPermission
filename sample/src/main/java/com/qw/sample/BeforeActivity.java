@@ -21,6 +21,8 @@ public class BeforeActivity extends AppCompatActivity {
 
     private static final int PERMISSION_CODE_CONTACT = 101;
 
+    private static final int PERMISSION_CODE_READ_PHONE_STATE = 102;
+
     private static final int REQUEST_CODE_CONTACT = 1;
 
     @Override
@@ -37,6 +39,12 @@ public class BeforeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 chooseContact();
+            }
+        });
+        findViewById(R.id.bt_read_phone_status).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                readPhoneStatus();
             }
         });
     }
@@ -71,6 +79,24 @@ public class BeforeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 读取联系人权限和打电话是一组，只要一个授予即可无需重复请求
+     */
+    public void readPhoneStatus() {
+        //6.0以下 直接即可直接读取
+        if (android.os.Build.VERSION.SDK_INT < M) {
+            Utils.readPhoneStatus(BeforeActivity.this);
+        } else {
+            //6.0以上
+            if (ContextCompat.checkSelfPermission(BeforeActivity.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(BeforeActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE},
+                        PERMISSION_CODE_READ_PHONE_STATE);
+            } else {
+                Utils.readPhoneStatus(BeforeActivity.this);
+            }
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -87,6 +113,13 @@ public class BeforeActivity extends AppCompatActivity {
                     Toast.makeText(BeforeActivity.this, "本次选择联系人授权失败,请手动去设置页打开权限，或者重试授权权限", Toast.LENGTH_SHORT).show();
                 } else {
                     Utils.chooseContact(BeforeActivity.this, REQUEST_CODE_CONTACT);
+                }
+                break;
+            case PERMISSION_CODE_READ_PHONE_STATE:
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(BeforeActivity.this, "本次读取联系人失败，请手动去设置页打开权限，或者重试授权权限", Toast.LENGTH_SHORT).show();
+                } else {
+                    Utils.readPhoneStatus(BeforeActivity.this);
                 }
                 break;
             default:

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import com.qw.sample.utils.Utils;
 import com.qw.soul.permission.Constants;
@@ -17,11 +18,13 @@ import com.qw.soul.permission.bean.Special;
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener;
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener;
 import com.qw.soul.permission.callbcak.SpecialPermissionListener;
+import com.qw.soul.permission.request.fragment.PermissionFragment;
+import com.qw.soul.permission.request.fragment.PermissionSupportFragment;
 
 /**
- * if your project based on Activity
+ * if your project based on AppComponentActivity or FragmentActivity
  */
-public class ApiGuideActivity extends Activity {
+public class ApiGuideAppComponentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

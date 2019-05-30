@@ -1,12 +1,9 @@
 package com.qw.soul.permission.request.fragment;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import com.qw.soul.permission.Constants;
 import com.qw.soul.permission.PermissionTools;
@@ -27,62 +24,17 @@ public class PermissionFragment extends Fragment implements IPermissionActions {
 
     private static final String TAG = PermissionFragment.class.getSimpleName();
 
-    private String[] permissions;
-
     private Special specialToRequest;
 
     private RequestPermissionListener runtimeListener;
 
     private SpecialPermissionListener specialListener;
 
-    private boolean isRequestRunTimePermission = false;
-
-    private boolean isContainerAlready = false;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-    }
-
     @TargetApi(M)
     @Override
     public void requestPermissions(String[] permissions, RequestPermissionListener listener) {
         this.runtimeListener = listener;
-        this.permissions = permissions;
-        this.isRequestRunTimePermission = true;
-        if (!isContainerAlready) {
-            return;
-        }
         requestPermissions(permissions, Constants.REQUEST_CODE_PERMISSION);
-    }
-
-    @Override
-    public void requestSpecialPermission(Special permission, SpecialPermissionListener listener) {
-        this.specialListener = listener;
-        this.specialToRequest = permission;
-        this.isRequestRunTimePermission = false;
-        if (!isContainerAlready) {
-            return;
-        }
-        requestPermissionSpecial();
-    }
-
-    @SuppressLint("NewApi")
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        isContainerAlready = true;
-        //request Runtime
-        if (isRequestRunTimePermission && null != permissions) {
-            requestPermissions(permissions, Constants.REQUEST_CODE_PERMISSION);
-            return;
-        }
-        //request special
-        if (null == specialToRequest) {
-            return;
-        }
-        requestPermissionSpecial();
     }
 
     @TargetApi(M)
@@ -102,6 +54,23 @@ public class PermissionFragment extends Fragment implements IPermissionActions {
     }
 
     @Override
+    public void requestSpecialPermission(Special permission, SpecialPermissionListener listener) {
+        this.specialListener = listener;
+        this.specialToRequest = permission;
+        Intent intent = PermissionTools.getSpecialPermissionIntent(getActivity(), specialToRequest);
+        if (null == intent) {
+            PermissionDebug.w(TAG, "create intent failed");
+            return;
+        }
+        try {
+            startActivityForResult(intent, Constants.REQUEST_CODE_PERMISSION_SPECIAL);
+        } catch (Exception e) {
+            e.printStackTrace();
+            PermissionDebug.e(TAG, e.toString());
+        }
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Activity activity = getActivity();
@@ -117,19 +86,4 @@ public class PermissionFragment extends Fragment implements IPermissionActions {
             }
         }
     }
-
-    private void requestPermissionSpecial() {
-        Intent intent = PermissionTools.getSpecialPermissionIntent(getActivity(), specialToRequest);
-        if (null == intent) {
-            PermissionDebug.w(TAG, "create intent failed");
-            return;
-        }
-        try {
-            startActivityForResult(intent, Constants.REQUEST_CODE_PERMISSION_SPECIAL);
-        } catch (Exception e) {
-            e.printStackTrace();
-            PermissionDebug.e(TAG, e.toString());
-        }
-    }
-
 }

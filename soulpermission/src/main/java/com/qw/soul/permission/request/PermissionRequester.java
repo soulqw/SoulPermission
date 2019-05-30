@@ -31,6 +31,7 @@ public class PermissionRequester {
      * 权限名称
      *
      * @param permissionNames 如 Manifest.permission.CAMERA
+     *                        {@link android.Manifest.permission }
      */
     public PermissionRequester withPermission(String... permissionNames) {
         this.permissions = permissionNames;
@@ -39,6 +40,9 @@ public class PermissionRequester {
 
     /**
      * 包含权限的实体类
+     *
+     * @param permissions 权限实体类
+     *                    {@link com.qw.soul.permission.bean.Permission }
      */
     public PermissionRequester withPermission(Permission... permissions) {
         this.permissions = new String[permissions.length];

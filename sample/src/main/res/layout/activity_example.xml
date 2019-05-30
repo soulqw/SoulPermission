@@ -21,4 +21,11 @@
             android:layout_height="wrap_content"
             android:text="Choose contact"/>
 
+    <Button
+            android:textAllCaps="false"
+            android:id="@+id/bt_read_phone_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Read Phone Status"/>
+
 </LinearLayout>

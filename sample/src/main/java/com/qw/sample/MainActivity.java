@@ -21,7 +21,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, AfterActivity.class));
     }
 
-    public void apiGuide(View view) {
+    public void apiGuideActivity(View view) {
         startActivity(new Intent(MainActivity.this, ApiGuideActivity.class));
     }
+
+    public void apiGuideAppComponentActivity(View view) {
+        startActivity(new Intent(MainActivity.this, ApiGuideAppComponentActivity.class));
+    }
+
 }

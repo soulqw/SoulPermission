@@ -44,6 +44,22 @@ public class PermissionSupportFragment extends Fragment implements IPermissionAc
         this.runtimeListener = listener;
     }
 
+    @TargetApi(M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Permission[] permissionResults = new Permission[permissions.length];
+        if (requestCode == Constants.REQUEST_CODE_PERMISSION) {
+            for (int i = 0; i < permissions.length; ++i) {
+                Permission permission = new Permission(permissions[i], grantResults[i], this.shouldShowRequestPermissionRationale(permissions[i]));
+                permissionResults[i] = permission;
+            }
+        }
+        if (null != runtimeListener && PermissionTools.isActivityAvailable(getActivity())) {
+            runtimeListener.onPermissionResult(permissionResults);
+        }
+    }
+
     @Override
     public void requestSpecialPermission(Special permission, SpecialPermissionListener listener) {
         this.specialListener = listener;
@@ -58,22 +74,6 @@ public class PermissionSupportFragment extends Fragment implements IPermissionAc
         } catch (Exception e) {
             e.printStackTrace();
             PermissionDebug.e(TAG, e.toString());
-        }
-    }
-
-    @TargetApi(M)
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Permission[] permissionResults = new Permission[permissions.length];
-        if (requestCode == Constants.REQUEST_CODE_PERMISSION) {
-            for (int i = 0; i < permissions.length; ++i) {
-                Permission permission = new Permission(permissions[i], grantResults[i], this.shouldShowRequestPermissionRationale(permissions[i]));
-                permissionResults[i] = permission;
-            }
-        }
-        if (null != runtimeListener && PermissionTools.isActivityAvailable(getActivity())) {
-            runtimeListener.onPermissionResult(permissionResults);
         }
     }
 

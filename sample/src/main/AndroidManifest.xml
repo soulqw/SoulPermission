@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.BODY_SENSORS"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <application
@@ -30,6 +32,7 @@
         <activity android:name="com.qw.sample.BeforeActivity"/>
         <activity android:name="com.qw.sample.AfterActivity"/>
         <activity android:name="com.qw.sample.ApiGuideActivity"/>
+        <activity android:name=".ApiGuideAppComponentActivity"/>
     </application>
 
 </manifest>

@@ -52,15 +52,14 @@ public class Utils {
 
     /**
      * 读取手机状态
-     *
-     * @param context
      */
-    public String readPhoneStatus(Context context) {
+    public static void readPhoneStatus(Context context) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         if (tm == null) {
-            return "";
+            return;
         }
-        return "phone " + tm.getLine1Number() + "\nime" + tm.getImei() + "\nsimSerialNumber" + tm.getSimSerialNumber();
+        Toast.makeText(context, "phone " + tm.getLine1Number() + "\nime " + tm.getDeviceId() + "\nsimSerialNumber " + tm.getSimSerialNumber(), Toast.LENGTH_SHORT)
+                .show();
     }
 
     /**

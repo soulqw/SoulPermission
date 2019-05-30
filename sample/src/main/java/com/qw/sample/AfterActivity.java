@@ -29,6 +29,12 @@ public class AfterActivity extends AppCompatActivity {
                 chooseContact();
             }
         });
+        findViewById(R.id.bt_read_phone_status).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UtilsWithPermission.readPhoneStatus();
+            }
+        });
     }
 
 //    public void makeCall() {

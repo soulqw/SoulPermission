@@ -29,15 +29,21 @@
             android:text="After"/>
 
     <TextView
-            android:text="guide"
+            android:text="Api_Guide"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
     <Button
             android:textAllCaps="false"
-            android:onClick="apiGuide"
+            android:onClick="apiGuideActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="API_Guide"/>
+            android:text="Based on Activity"/>
+    <Button
+            android:textAllCaps="false"
+            android:onClick="apiGuideAppComponentActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Based on FragmentActivity or AppComponentActivity"/>
 
 </LinearLayout>
