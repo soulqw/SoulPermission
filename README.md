@@ -12,10 +12,11 @@
 
 ```java
 dependencies {
-    implementation 'com.qw:soulpermission:1.1.6'
+    implementation 'com.qw:soulpermission:1.1.7'
 }
 
 ```
+[1.1.7 ReleaseNote](http://note.youdao.com/noteshare?id=bd3c7ebfdccb67bb509205be776bd9f2)
 ## Usage：
 
 #### 基本用法：
@@ -116,8 +117,9 @@ Permission checkResult = SoulPermission.getInstance().checkSinglePermission(Mani
 
 
 ```java
-SoulPermission.getInstance().goPermissionSettings();
+SoulPermission.getInstance().goApplicationSettings();
 ```
+
 - 设置debug模式(看日志打印)
 
 ```java
@@ -142,15 +144,16 @@ public class SimpleApplication extends Application {
 ```
 - 如果需要在某个页面创建时候请求权限，请在onCreate()中使用、请不要在onResume()调用，否则权限未被动态授予前会陷入死循环。
 ### Screenshot：
-![image](https://img-blog.csdnimg.cn/2019042223014322.png)
-![image](https://img-blog.csdnimg.cn/20190522171928597.png)
+![image](https://img-blog.csdnimg.cn/20190530192037641.png)
+
+![image](https://img-blog.csdnimg.cn/20190530192140891.png)
 - for common Permission
 
-![image](https://img-blog.csdnimg.cn/20190522172649778.gif)
+![image](https://img-blog.csdnimg.cn/20190530192219180.gif)
 
 - for Special Permission
 
-![image](https://img-blog.csdnimg.cn/20190522171642336.gif)
+![image](https://img-blog.csdnimg.cn/2019053019225180.gif)
 
 ### MoreDetail：
 #### [工作原理和最佳示例](https://blog.csdn.net/u014626094/article/details/89438614)
