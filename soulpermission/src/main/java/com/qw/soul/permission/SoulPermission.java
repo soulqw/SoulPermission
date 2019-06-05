@@ -34,11 +34,11 @@ public class SoulPermission {
 
     private static final String TAG = SoulPermission.class.getSimpleName();
 
-    private static SoulPermission instance;
+    private volatile static SoulPermission instance;
 
     private static Application globalContext;
 
-    private static boolean alreadyInit;
+    private volatile static boolean alreadyInit;
 
     private PermissionActivityLifecycle lifecycle;
 
@@ -77,9 +77,9 @@ public class SoulPermission {
             PermissionDebug.w(TAG, "already init");
             return;
         }
+        alreadyInit = true;
         globalContext = application;
         getInstance().registerLifecycle(globalContext);
-        alreadyInit = true;
         PermissionDebug.d(TAG, "user init");
     }
 
