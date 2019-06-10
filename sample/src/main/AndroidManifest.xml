@@ -33,6 +33,8 @@
         <activity android:name="com.qw.sample.AfterActivity"/>
         <activity android:name="com.qw.sample.ApiGuideActivity"/>
         <activity android:name=".ApiGuideAppComponentActivity"/>
+        <activity android:name=".WorkWithSupportFragmentActivity"/>
+        <activity android:name=".WorkWithFragmentActivity"/>
     </application>
 
 </manifest>
