@@ -38,12 +38,38 @@
             android:onClick="apiGuideActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Based on Activity"/>
+            android:text="in Activity"/>
     <Button
             android:textAllCaps="false"
             android:onClick="apiGuideAppComponentActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Based on FragmentActivity or AppComponentActivity"/>
+            android:text="in FragmentActivity(AppComponentActivity)"/>
+
+    <Button
+            android:textAllCaps="false"
+            android:onClick="fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="in Fragment"/>
+
+    <Button
+            android:textAllCaps="false"
+            android:onClick="supportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="in SupportFragment"/>
+
+    <TextView
+            android:text="common usage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <Button
+            android:textAllCaps="false"
+            android:onClick="fragmentWithViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="used in ViewPagerFragment"/>
 
 </LinearLayout>

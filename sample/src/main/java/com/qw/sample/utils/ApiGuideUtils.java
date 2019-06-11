@@ -1,15 +1,9 @@
-package com.qw.sample;
-
+package com.qw.sample.utils;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.view.View;
-import com.qw.sample.utils.Utils;
-import com.qw.soul.permission.Constants;
 import com.qw.soul.permission.SoulPermission;
 import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Permissions;
@@ -19,23 +13,17 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener;
 import com.qw.soul.permission.callbcak.SpecialPermissionListener;
 
 /**
- * if your project based on Activity
+ * @author cd5160866
  */
-public class ApiGuideActivity extends Activity {
+public class ApiGuideUtils {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_api_guide);
-    }
-
-    public void checkSinglePermission(View view) {
+    public static void checkSinglePermission(View view) {
         //you can also use checkPermissions() for a series of permissions
         Permission checkResult = SoulPermission.getInstance().checkSinglePermission(Manifest.permission.ACCESS_FINE_LOCATION);
         Utils.showMessage(view, checkResult.toString());
     }
 
-    public void requestSinglePermission(final View view) {
+    public static void requestSinglePermission(final View view) {
         SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION,
                 //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
                 new CheckRequestPermissionListener() {
@@ -51,7 +39,7 @@ public class ApiGuideActivity extends Activity {
                 });
     }
 
-    public void requestPermissions(final View view) {
+    public static void requestPermissions(final View view) {
         SoulPermission.getInstance().checkAndRequestPermissions(
                 Permissions.build(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE),
                 //if you want do noting or no need all the callbacks you may use SimplePermissionsAdapter instead
@@ -68,7 +56,7 @@ public class ApiGuideActivity extends Activity {
                 });
     }
 
-    public void requestSinglePermissionWithRationale(final View view) {
+    public static void requestSinglePermissionWithRationale(final View view) {
         SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.READ_CONTACTS,
                 new CheckRequestPermissionListener() {
                     @Override
@@ -88,13 +76,13 @@ public class ApiGuideActivity extends Activity {
                 });
     }
 
-    public void checkNotification(View view) {
+    public static void checkNotification(View view) {
         boolean checkResult = SoulPermission.getInstance().checkSpecialPermission(Special.NOTIFICATION);
         Utils.showMessage(view, checkResult ? "Notification is enable" :
                 "Notification is disable \n you may invoke checkAndRequestPermission and enable notification");
     }
 
-    public void checkAndRequestNotification(final View view) {
+    public static void checkAndRequestNotification(final View view) {
         //if you want do noting or no need all the callbacks you may use SimpleSpecialPermissionAdapter instead
         SoulPermission.getInstance().checkAndRequestPermission(Special.NOTIFICATION, new SpecialPermissionListener() {
             @Override
@@ -115,7 +103,7 @@ public class ApiGuideActivity extends Activity {
         });
     }
 
-    public void checkAndRequestSystemAlert(final View view) {
+    public static void checkAndRequestSystemAlert(final View view) {
         //if you want do noting or no need all the callbacks you may use SimpleSpecialPermissionAdapter instead
         SoulPermission.getInstance().checkAndRequestPermission(Special.SYSTEM_ALERT, new SpecialPermissionListener() {
             @Override
@@ -130,7 +118,7 @@ public class ApiGuideActivity extends Activity {
         });
     }
 
-    public void checkAndRequestUnKnownSource(final View view) {
+    public static void checkAndRequestUnKnownSource(final View view) {
         //if you want do noting or no need all the callbacks you may use SimpleSpecialPermissionAdapter instead
         SoulPermission.getInstance().checkAndRequestPermission(Special.UNKNOWN_APP_SOURCES, new SpecialPermissionListener() {
             @Override
@@ -145,22 +133,14 @@ public class ApiGuideActivity extends Activity {
         });
     }
 
-    public void goApplicationSettings(View view) {
+    public static void goApplicationSettings() {
         SoulPermission.getInstance().goApplicationSettings();
     }
 
-    public void getTopActivity(View view) {
+    public static void getTopActivity(View view) {
         Activity activity = SoulPermission.getInstance().getTopActivity();
         if (null != activity) {
             Utils.showMessage(view, activity.getClass().getSimpleName() + " " + activity.hashCode());
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.DEFAULT_CODE_APPLICATION_SETTINGS) {
-            Utils.showMessage(findViewById(R.id.content), "onActivityResult from goApplicationSettings");
         }
     }
 }

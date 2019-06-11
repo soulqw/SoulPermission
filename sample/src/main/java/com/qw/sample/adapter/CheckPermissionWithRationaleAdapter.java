@@ -54,7 +54,7 @@ public abstract class CheckPermissionWithRationaleAdapter implements CheckReques
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //去设置页
-                            SoulPermission.getInstance().goPermissionSettings();
+                            SoulPermission.getInstance().goApplicationSettings();
                         }
                     }).create().show();
         }

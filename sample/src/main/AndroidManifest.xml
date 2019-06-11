@@ -31,10 +31,10 @@
         </activity>
         <activity android:name="com.qw.sample.BeforeActivity"/>
         <activity android:name="com.qw.sample.AfterActivity"/>
-        <activity android:name="com.qw.sample.ApiGuideActivity"/>
-        <activity android:name=".ApiGuideAppComponentActivity"/>
-        <activity android:name=".WorkWithSupportFragmentActivity"/>
-        <activity android:name=".WorkWithFragmentActivity"/>
+        <activity android:name="com.qw.sample.guide.ApiGuideActivity"/>
+        <activity android:name=".guide.ApiGuideAppComponentActivity"/>
+        <activity android:name=".guide.WithPagerFragmentActivity"/>
+        <activity android:name=".guide.fragment.ContainerActivity"/>
     </application>
 
 </manifest>

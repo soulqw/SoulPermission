@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import com.qw.sample.guide.ApiGuideActivity;
+import com.qw.sample.guide.ApiGuideAppComponentActivity;
+import com.qw.sample.guide.WithPagerFragmentActivity;
+import com.qw.sample.guide.fragment.ContainerActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,7 +30,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void apiGuideAppComponentActivity(View view) {
-        startActivity(new Intent(MainActivity.this, WorkWithSupportFragmentActivity.class));
+        startActivity(new Intent(MainActivity.this, ApiGuideAppComponentActivity.class));
+    }
+
+    public void fragment(View view) {
+        ContainerActivity.start(this, false);
+    }
+
+    public void supportFragment(View view) {
+        ContainerActivity.start(this, true);
+    }
+
+    public void fragmentWithViewPager(View view) {
+        startActivity(new Intent(MainActivity.this, WithPagerFragmentActivity.class));
     }
 
 }

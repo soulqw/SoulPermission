@@ -9,6 +9,16 @@
         tools:ignore="HardcodedText"
         tools:context=".MainActivity">
 
+    <Button
+            android:id="@+id/FragmentStatePagerAdapter"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="FragmentStatePagerAdapter"/>
+    <Button
+            android:id="@+id/FragmentPagerAdapter"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="FragmentPagerAdapter"/>
     <android.support.v4.view.ViewPager
             android:id="@+id/vp"
             android:layout_width="match_parent"

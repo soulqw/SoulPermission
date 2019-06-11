@@ -1,12 +1,16 @@
 package com.qw.soul.permission.request;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import com.qw.soul.permission.debug.PermissionDebug;
 import com.qw.soul.permission.request.fragment.PermissionFragment;
 import com.qw.soul.permission.request.fragment.PermissionSupportFragment;
+
+import java.lang.reflect.Field;
+import java.util.List;
 
 
 /**
@@ -31,7 +35,7 @@ class PermissionFragmentFactory {
             }
             action = permissionSupportFragment;
         } else {
-            android.app.FragmentManager fragmentManager = activity.getFragmentManager();
+            android.app.FragmentManager fragmentManager = getFragmentManager(activity);
             PermissionFragment permissionFragment = (PermissionFragment) fragmentManager.findFragmentByTag(FRAGMENT_TAG);
             if (null == permissionFragment) {
                 permissionFragment = new PermissionFragment();
@@ -56,15 +60,29 @@ class PermissionFragmentFactory {
         return fragmentManager;
     }
 
-//    private static android.app.FragmentManager getFragmentManager(Activity activity) {
-//        android.app.FragmentManager fragmentManager = activity.getFragmentManager();
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            if (fragmentManager.getFragments().size() > 0 && fragmentManager.getFragments().get(0) != null) {
-//                return fragmentManager.getFragments().get(0).getChildFragmentManager();
-//            }
-//        } else {
-//            //todo reflect
-//        }
-//        return fragmentManager;
-//    }
+    private static android.app.FragmentManager getFragmentManager(Activity activity) {
+        android.app.FragmentManager fragmentManager = activity.getFragmentManager();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (fragmentManager.getFragments().size() > 0
+                    && null != fragmentManager.getFragments().get(0)) {
+                return fragmentManager.getFragments().get(0).getChildFragmentManager();
+            }
+        } else {
+            try {
+                Field fragmentsField = Class.forName("android.app.FragmentManagerImpl").getDeclaredField("mAdded");
+                fragmentsField.setAccessible(true);
+                List<Fragment> fragmentList = (List<Fragment>) fragmentsField.get(fragmentManager);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
+                        && fragmentList.size() > 0
+                        && null != fragmentList.get(0)) {
+                    PermissionDebug.d(TAG, "reflect get child fragmentManager success");
+                    return fragmentList.get(0).getChildFragmentManager();
+                }
+            } catch (Exception e) {
+                PermissionDebug.w(TAG, "try to get childFragmentManager failed " + e.toString());
+                e.printStackTrace();
+            }
+        }
+        return fragmentManager;
+    }
 }

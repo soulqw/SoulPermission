@@ -1,4 +1,4 @@
-package com.qw.sample.fragment;
+package com.qw.sample.guide.fragment;
 
 
 import android.Manifest;
@@ -13,10 +13,10 @@ import android.view.ViewGroup;
 import com.qw.soul.permission.SoulPermission;
 import com.qw.soul.permission.adapter.SimplePermissionAdapter;
 
-public class TestFragment extends Fragment {
+public class PagerItemFragment extends Fragment {
 
-    public static TestFragment get(int color) {
-        TestFragment fragment = new TestFragment();
+    public static PagerItemFragment get(int color) {
+        PagerItemFragment fragment = new PagerItemFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("Color", color);
         fragment.setArguments(bundle);
@@ -30,8 +30,7 @@ public class TestFragment extends Fragment {
         int color = getArguments().getInt("Color");
         view.setBackgroundColor(color);
         if (color == Color.RED) {
-            SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION, new SimplePermissionAdapter() {
-            });
+            SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.BODY_SENSORS, new SimplePermissionAdapter() {});
         }
         return view;
     }
