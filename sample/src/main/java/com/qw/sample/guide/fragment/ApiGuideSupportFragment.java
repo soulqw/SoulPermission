@@ -81,7 +81,7 @@ public class ApiGuideSupportFragment extends Fragment {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ApiGuideUtils.goApplicationSettings();
+                        ApiGuideUtils.goApplicationSettings(v);
                     }
                 });
         findViewById(R.id.getTopActivity)

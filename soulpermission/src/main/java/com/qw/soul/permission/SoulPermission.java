@@ -252,23 +252,41 @@ public class SoulPermission {
         goApplicationSettings();
     }
 
-    /**
-     * 跳转到应用详情页面
-     * use default requestCode: Constants.DEFAULT_CODE_APPLICATION_SETTINGS
-     * {@link com.qw.soul.permission.Constants }
-     */
-    public void goApplicationSettings() {
-        goApplicationSettings(Constants.DEFAULT_CODE_APPLICATION_SETTINGS);
-    }
-
+    @Deprecated
     /**
      * 跳转到应用详情页
-     *
      * @param requestCode 可自定义requestCode方便自己在回调中处理
+     *     此方法无法在Fragment中获取onActivityResult 故废弃
+     * @see #goApplicationSettings(GoAppDetailCallBack callBack)
      */
     public void goApplicationSettings(int requestCode) {
         PermissionTools.jumpAppDetail(getTopActivity(), requestCode);
     }
+
+    /**
+     * 跳转到应用详情页面
+     *
+     * @param callBack 如果你需要在回到页面的时候接受回调的话
+     */
+    public void goApplicationSettings(@Nullable final GoAppDetailCallBack callBack) {
+        checkStatusBeforeDoSomething(new CheckStatusCallBack() {
+            @Override
+            public void onStatusOk(Activity activity) {
+                new PermissionRequester(activity)
+                        .goAppDetail(callBack);
+            }
+
+            @Override
+            public void onStatusError() {
+                //do nothing
+            }
+        });
+    }
+
+    public void goApplicationSettings() {
+        goApplicationSettings(null);
+    }
+
 
     void autoInit(Application application) {
         if (null != globalContext) {

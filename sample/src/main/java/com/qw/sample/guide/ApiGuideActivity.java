@@ -82,7 +82,7 @@ public class ApiGuideActivity extends Activity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ApiGuideUtils.goApplicationSettings();
+                        ApiGuideUtils.goApplicationSettings(v);
                     }
                 });
         findViewById(R.id.getTopActivity)
@@ -92,13 +92,5 @@ public class ApiGuideActivity extends Activity {
                         ApiGuideUtils.getTopActivity(v);
                     }
                 });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.DEFAULT_CODE_APPLICATION_SETTINGS) {
-            Utils.showMessage(findViewById(R.id.content), "onActivityResult from goApplicationSettings");
-        }
     }
 }

@@ -16,8 +16,14 @@ public interface Constants {
     int REQUEST_CODE_PERMISSION_SPECIAL = 1 << 11;
 
     /**
+     * request code for jump application settings
+     */
+    int REQUEST_CODE_APPLICATION_SETTINGS = 1 << 12;
+
+    /**
      * default request code for jump application settings
      */
+    @Deprecated
     int DEFAULT_CODE_APPLICATION_SETTINGS = 1 << 12;
 
 }

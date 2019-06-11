@@ -5,10 +5,12 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.qw.soul.permission.Constants;
 import com.qw.soul.permission.PermissionTools;
 import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Special;
+import com.qw.soul.permission.callbcak.GoAppDetailCallBack;
 import com.qw.soul.permission.callbcak.RequestPermissionListener;
 import com.qw.soul.permission.callbcak.SpecialPermissionListener;
 import com.qw.soul.permission.checker.SpecialChecker;
@@ -29,6 +31,8 @@ public class PermissionFragment extends Fragment implements IPermissionActions {
     private RequestPermissionListener runtimeListener;
 
     private SpecialPermissionListener specialListener;
+
+    private GoAppDetailCallBack goAppDetailCallBack;
 
     @TargetApi(M)
     @Override
@@ -71,19 +75,34 @@ public class PermissionFragment extends Fragment implements IPermissionActions {
     }
 
     @Override
+    public void goAppDetail(@Nullable GoAppDetailCallBack callBack) {
+        this.goAppDetailCallBack = callBack;
+        Intent intent = PermissionTools.getAppManageIntent(getActivity());
+        if (null == intent) {
+            PermissionDebug.w(TAG, "create intent failed");
+            return;
+        }
+        startActivityForResult(intent, Constants.REQUEST_CODE_APPLICATION_SETTINGS);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Activity activity = getActivity();
-        if (null == specialListener || !PermissionTools.isActivityAvailable(activity)) {
+        if (!PermissionTools.isActivityAvailable(activity)) {
             return;
         }
-        if (requestCode == Constants.REQUEST_CODE_PERMISSION_SPECIAL) {
+        if (requestCode == Constants.REQUEST_CODE_PERMISSION_SPECIAL && null != specialToRequest && null != specialListener) {
             boolean result = new SpecialChecker(activity, specialToRequest).check();
             if (result) {
                 specialListener.onGranted(specialToRequest);
             } else {
                 specialListener.onDenied(specialToRequest);
             }
+            return;
+        }
+        if (requestCode == Constants.REQUEST_CODE_APPLICATION_SETTINGS && null != goAppDetailCallBack) {
+            goAppDetailCallBack.onBackFromAppDetail(data);
         }
     }
 }

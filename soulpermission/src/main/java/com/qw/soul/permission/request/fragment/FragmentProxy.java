@@ -1,7 +1,9 @@
 package com.qw.soul.permission.request.fragment;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.qw.soul.permission.bean.Special;
+import com.qw.soul.permission.callbcak.GoAppDetailCallBack;
 import com.qw.soul.permission.callbcak.RequestPermissionListener;
 import com.qw.soul.permission.callbcak.SpecialPermissionListener;
 import com.qw.soul.permission.debug.PermissionDebug;
@@ -31,6 +33,12 @@ public class FragmentProxy implements IPermissionActions {
     public void requestSpecialPermission(Special permission, SpecialPermissionListener listener) {
         this.fragmentImp.requestSpecialPermission(permission, listener);
         PermissionDebug.d(TAG, fragmentImp.getClass().getSimpleName() + " requestSpecial:" + hashCode());
+    }
+
+    @Override
+    public void goAppDetail(@Nullable GoAppDetailCallBack callBack) {
+        this.fragmentImp.goAppDetail(callBack);
+        PermissionDebug.d(TAG, fragmentImp.getClass().getSimpleName() + " goAppDetail:" + hashCode());
     }
 
 }

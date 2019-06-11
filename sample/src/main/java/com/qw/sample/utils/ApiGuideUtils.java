@@ -2,6 +2,7 @@ package com.qw.sample.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import com.qw.soul.permission.SoulPermission;
@@ -10,6 +11,7 @@ import com.qw.soul.permission.bean.Permissions;
 import com.qw.soul.permission.bean.Special;
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener;
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener;
+import com.qw.soul.permission.callbcak.GoAppDetailCallBack;
 import com.qw.soul.permission.callbcak.SpecialPermissionListener;
 
 /**
@@ -133,8 +135,13 @@ public class ApiGuideUtils {
         });
     }
 
-    public static void goApplicationSettings() {
-        SoulPermission.getInstance().goApplicationSettings();
+    public static void goApplicationSettings(final View view) {
+        SoulPermission.getInstance().goApplicationSettings(new GoAppDetailCallBack() {
+            @Override
+            public void onBackFromAppDetail(Intent data) {
+                Utils.showMessage(view, "back from go appDetail");
+            }
+        });
     }
 
     public static void getTopActivity(View view) {

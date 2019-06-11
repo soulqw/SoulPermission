@@ -1,6 +1,7 @@
 package com.qw.soul.permission;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -70,6 +71,18 @@ public class PermissionTools {
         return intent;
     }
 
+    public static Intent getAppManageIntent(Context context) {
+        Intent intent;
+        try {
+            intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+            intent.setData(uri);
+        } catch (Exception e) {
+            intent = new Intent(Settings.ACTION_MANAGE_ALL_APPLICATIONS_SETTINGS);
+        }
+        return intent;
+    }
+
     static Permission[] convert(List<Permission> permissions) {
         return permissions.toArray(new Permission[0]);
     }
@@ -88,25 +101,13 @@ public class PermissionTools {
     static void jumpAppDetail(Activity activity, int requestCode) {
         if (!isActivityAvailable(activity)) {
             PermissionDebug.e(TAG, "activity status error");
+            return;
         }
         Intent appDetailIntent = getAppManageIntent(activity);
         if (null == appDetailIntent) {
             PermissionDebug.e(TAG, "get system intent failed");
         }
         activity.startActivityForResult(appDetailIntent, requestCode);
-    }
-
-
-    private static Intent getAppManageIntent(Context context) {
-        Intent intent;
-        try {
-            intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            Uri uri = Uri.fromParts("package", context.getPackageName(), null);
-            intent.setData(uri);
-        } catch (Exception e) {
-            intent = new Intent(Settings.ACTION_MANAGE_ALL_APPLICATIONS_SETTINGS);
-        }
-        return intent;
     }
 
     private static Intent getInstallPermissionIntent(Context context) {

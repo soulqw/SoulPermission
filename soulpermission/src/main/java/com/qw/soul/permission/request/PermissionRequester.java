@@ -2,8 +2,10 @@ package com.qw.soul.permission.request;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.support.annotation.Nullable;
 import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Special;
+import com.qw.soul.permission.callbcak.GoAppDetailCallBack;
 import com.qw.soul.permission.callbcak.RequestPermissionListener;
 import com.qw.soul.permission.callbcak.SpecialPermissionListener;
 import com.qw.soul.permission.request.fragment.FragmentProxy;
@@ -82,5 +84,12 @@ public class PermissionRequester {
             throw new IllegalArgumentException("fragment or params special permission is null");
         }
         permissionFragment.requestSpecialPermission(permissionSpecial, listener);
+    }
+
+    /**
+     * 去设置页
+     */
+    public void goAppDetail(@Nullable GoAppDetailCallBack appDetailCallBack) {
+        permissionFragment.goAppDetail(appDetailCallBack);
     }
 }
