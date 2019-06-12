@@ -72,7 +72,7 @@ public class BeforeActivity extends AppCompatActivity {
             //6.0以上
             if (ContextCompat.checkSelfPermission(BeforeActivity.this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(BeforeActivity.this, new String[]{Manifest.permission.READ_CONTACTS},
-                        PERMISSION_CODE_CALL);
+                        PERMISSION_CODE_CONTACT);
             } else {
                 Utils.chooseContact(BeforeActivity.this, REQUEST_CODE_CONTACT);
             }

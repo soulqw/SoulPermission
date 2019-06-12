@@ -5,18 +5,18 @@
  - 内部涵盖版本判断，一行代码解决权限相关操作，无需在调用业务方写权限适配代码，继而实现真正调用时请求的“真运行时权限”
  - 接入成本低，零入侵，仅需要在gradle配置一行代码
  - 支持多项权限同时请求
- - 支持特殊权限(Notification[通知]、SystemAlert[应用悬浮窗]、UnknownAppSource[未知来源应用安装])的检查与请求
+ - 支持特殊权限(Notification[通知]、SystemAlert[应用悬浮窗]、未知来源应用安装)的检查与请求
  - 支持系统权限页面跳转
  - 支持debug模式
 ## Installation：
 
 ```java
 dependencies {
-    implementation 'com.qw:soulpermission:1.1.7'
+    implementation 'com.qw:soulpermission:1.1.8'
 }
 
 ```
-[1.1.7 ReleaseNote](http://note.youdao.com/noteshare?id=bd3c7ebfdccb67bb509205be776bd9f2)
+[1.1.8 ReleaseNote](https://github.com/soulqw/SoulPermission/releases/tag/1.1.8)
 ## Usage：
 
 #### 基本用法：
@@ -117,7 +117,13 @@ Permission checkResult = SoulPermission.getInstance().checkSinglePermission(Mani
 
 
 ```java
-SoulPermission.getInstance().goApplicationSettings();
+ SoulPermission.getInstance().goApplicationSettings(new GoAppDetailCallBack() {
+            @Override
+            public void onBackFromAppDetail(Intent data) {
+                //if you need to know when back from app detail
+                Utils.showMessage(view, "back from go appDetail");
+            }
+        });
 ```
 
 - 设置debug模式(看日志打印)
@@ -128,7 +134,7 @@ SoulPermission.setDebug(true);
 
 #### 注意事项：
 - 最低支持Android 4.0(Api level 14)
-- SoulPermission内部自动初始化，如果你项目中使用了Tinker等使用了替换Application方式从而可能会导致SoulPermission内部初始化失败的框架(打开debug通过在任意页面请求权限可以通过日志看到是否初始化失败)，请手动在你的Application类中调用init即可。
+- SoulPermission内部自动初始化，如果你项目中使用了通过替换Application方式从而可能会导致SoulPermission内部初始化失败的框架(如Tinker，腾讯乐固等)，请手动在你的Application类中调用init即可（通过设置debug，可以看到错误日志打印和相关Toast）。
 
 ```java
 //invoke init in your application when auto init failed
@@ -144,7 +150,7 @@ public class SimpleApplication extends Application {
 ```
 - 如果需要在某个页面创建时候请求权限，请在onCreate()中使用、请不要在onResume()调用，否则权限未被动态授予前会陷入死循环。
 ### Screenshot：
-![image](https://img-blog.csdnimg.cn/20190530192037641.png)
+![image](https://img-blog.csdnimg.cn/20190612212049718.png)
 
 ![image](https://img-blog.csdnimg.cn/20190530192140891.png)
 - for common Permission

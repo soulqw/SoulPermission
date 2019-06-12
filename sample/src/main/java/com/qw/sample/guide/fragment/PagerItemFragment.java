@@ -10,8 +10,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import com.qw.soul.permission.SoulPermission;
 import com.qw.soul.permission.adapter.SimplePermissionAdapter;
+import com.qw.soul.permission.bean.Permission;
 
 public class PagerItemFragment extends Fragment {
 
@@ -30,7 +32,17 @@ public class PagerItemFragment extends Fragment {
         int color = getArguments().getInt("Color");
         view.setBackgroundColor(color);
         if (color == Color.RED) {
-            SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.BODY_SENSORS, new SimplePermissionAdapter() {});
+            SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.BODY_SENSORS, new SimplePermissionAdapter() {
+                @Override
+                public void onPermissionOk(Permission permission) {
+                    Toast.makeText(container.getContext(), "sensor permission ok", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onPermissionDenied(Permission permission) {
+                    Toast.makeText(container.getContext(), "sensor permission denied", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
         return view;
     }

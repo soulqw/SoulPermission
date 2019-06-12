@@ -139,6 +139,7 @@ public class ApiGuideUtils {
         SoulPermission.getInstance().goApplicationSettings(new GoAppDetailCallBack() {
             @Override
             public void onBackFromAppDetail(Intent data) {
+                //if you need to know when back from app detail
                 Utils.showMessage(view, "back from go appDetail");
             }
         });
