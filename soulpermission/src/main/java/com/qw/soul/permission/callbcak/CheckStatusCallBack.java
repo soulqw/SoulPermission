@@ -14,8 +14,4 @@ public interface CheckStatusCallBack {
      */
     void onStatusOk(Activity activity);
 
-    /**
-     * 状态错误
-     */
-    void onStatusError();
 }

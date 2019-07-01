@@ -90,7 +90,11 @@ public class SoulPermission {
      * @return 返回检查的结果
      * @see #checkPermissions
      */
+    @CheckResult
     public Permission checkSinglePermission(@NonNull String permission) {
+        if (checkPermissions(permission).length == 0) {
+            return null;
+        }
         return checkPermissions(permission)[0];
     }
 
@@ -100,17 +104,20 @@ public class SoulPermission {
      * @param permissions 权限名称 ,可检测多个
      * @return 返回检查的结果
      */
+    @CheckResult
     public Permission[] checkPermissions(@NonNull String... permissions) {
         List<Permission> resultPermissions = new LinkedList<>();
         Activity activity = getTopActivity();
+        if (null == activity) {
+            PermissionDebug.w(TAG, " get top activity failed check your app status");
+            return new Permission[0];
+        }
         for (String permission : permissions) {
-            int isGranted = checkPermission(getContext(), permission)
+            int isGranted = checkPermission(activity, permission)
                     ? PackageManager.PERMISSION_GRANTED
                     : PackageManager.PERMISSION_DENIED;
             boolean shouldRationale = false;
-            if (null != activity) {
-                shouldRationale = ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
-            }
+            shouldRationale = ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
             resultPermissions.add(new Permission(permission, isGranted, shouldRationale));
         }
         return PermissionTools.convert(resultPermissions);
@@ -124,7 +131,12 @@ public class SoulPermission {
      * @see Special
      */
     public boolean checkSpecialPermission(Special special) {
-        return CheckerFactory.create(getContext(), special).check();
+        Activity activity = getTopActivity();
+        if (null == activity) {
+            PermissionDebug.w(TAG, " get top activity failed check your app status");
+            return true;
+        }
+        return CheckerFactory.create(activity, special).check();
     }
 
     /**
@@ -161,6 +173,10 @@ public class SoulPermission {
     public void checkAndRequestPermissions(@NonNull Permissions permissions, @NonNull final CheckRequestPermissionsListener listener) {
         //check permission first
         Permission[] checkResult = checkPermissions(permissions.getPermissionsString());
+        if (checkResult.length == 0) {
+            PermissionDebug.w(TAG, "bad status ,check your application status");
+            return;
+        }
         //get refused permissions
         final Permission[] refusedPermissionList = filterRefusedPermissions(checkResult);
         // all permissions ok
@@ -275,11 +291,6 @@ public class SoulPermission {
                 new PermissionRequester(activity)
                         .goAppDetail(callBack);
             }
-
-            @Override
-            public void onStatusError() {
-                //do nothing
-            }
         });
     }
 
@@ -327,7 +338,7 @@ public class SoulPermission {
      * 是否满足请求运行时权限的条件
      */
     private boolean canRequestRunTimePermission() {
-        return !PermissionTools.isOldPermissionSystem(getContext());
+        return !PermissionTools.isOldPermissionSystem(getTopActivity());
     }
 
     private boolean checkPermission(Context context, String permission) {
@@ -345,7 +356,6 @@ public class SoulPermission {
                 PermissionTools.toast(getContext(), e.toString());
                 Log.e(TAG, e.toString());
             }
-            callBack.onStatusError();
             return;
         }
         //check MainThread
@@ -368,11 +378,6 @@ public class SoulPermission {
             @Override
             public void onStatusOk(Activity activity) {
                 requestRuntimePermission(activity, permissions.getPermissions(), listener);
-            }
-
-            @Override
-            public void onStatusError() {
-                //do nothing
             }
         });
     }
@@ -409,11 +414,6 @@ public class SoulPermission {
                 new PermissionRequester(activity)
                         .withPermission(specialPermission)
                         .request(listener);
-            }
-
-            @Override
-            public void onStatusError() {
-                //do nothing
             }
         });
 
