@@ -10,12 +10,20 @@
  - 支持debug模式
 ## Installation：
 
-```java
+```gradle
 dependencies {
-    implementation 'com.qw:soulpermission:1.1.8'
+  implementation 'com.qw:soulpermission:1.2.0_x'
 }
 
 ```
+如果你的应用还没有适配Android X：
+
+```gradle
+dependencies {
+   implementation 'com.qw:soulpermission:1.2.0'
+}
+```
+
 [1.1.8 ReleaseNote](https://github.com/soulqw/SoulPermission/releases/tag/1.1.8)
 ## Usage：
 
