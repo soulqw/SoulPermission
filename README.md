@@ -24,7 +24,7 @@ dependencies {
 }
 ```
 
-[1.1.8 ReleaseNote](https://github.com/soulqw/SoulPermission/releases/tag/1.1.8)
+[1.2.0 ReleaseNote](https://github.com/soulqw/SoulPermission/releases/tag/1.2.0)
 ## Usage：
 
 #### 基本用法：
