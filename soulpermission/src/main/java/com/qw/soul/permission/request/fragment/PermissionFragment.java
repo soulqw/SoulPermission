@@ -46,6 +46,10 @@ public class PermissionFragment extends Fragment implements IPermissionActions {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Permission[] permissionResults = new Permission[permissions.length];
+        //some specific rom will provide a null array
+        if (null == permissionResults || null == grantResults) {
+            return;
+        }
         if (requestCode == Constants.REQUEST_CODE_PERMISSION) {
             for (int i = 0; i < permissions.length; ++i) {
                 Permission permission = new Permission(permissions[i], grantResults[i], this.shouldShowRequestPermissionRationale(permissions[i]));

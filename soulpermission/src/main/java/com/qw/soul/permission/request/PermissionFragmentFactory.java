@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+
 import com.qw.soul.permission.debug.PermissionDebug;
 import com.qw.soul.permission.request.fragment.PermissionFragment;
 import com.qw.soul.permission.request.fragment.PermissionSupportFragment;
@@ -50,10 +51,11 @@ class PermissionFragmentFactory {
         return action;
     }
 
-
     private static FragmentManager getSupportFragmentManager(FragmentActivity activity) {
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        if (fragmentManager.getFragments().size() > 0
+        //some specific rom will provide a null List
+        boolean childAvailable = null != fragmentManager.getFragments();
+        if (childAvailable && fragmentManager.getFragments().size() > 0
                 && null != fragmentManager.getFragments().get(0)) {
             return fragmentManager.getFragments().get(0).getChildFragmentManager();
         }
@@ -63,7 +65,8 @@ class PermissionFragmentFactory {
     private static android.app.FragmentManager getFragmentManager(Activity activity) {
         android.app.FragmentManager fragmentManager = activity.getFragmentManager();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (fragmentManager.getFragments().size() > 0
+            if (null != fragmentManager.getFragments()
+                    && fragmentManager.getFragments().size() > 0
                     && null != fragmentManager.getFragments().get(0)) {
                 return fragmentManager.getFragments().get(0).getChildFragmentManager();
             }
@@ -73,6 +76,7 @@ class PermissionFragmentFactory {
                 fragmentsField.setAccessible(true);
                 List<Fragment> fragmentList = (List<Fragment>) fragmentsField.get(fragmentManager);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
+                        && null != fragmentList
                         && fragmentList.size() > 0
                         && null != fragmentList.get(0)) {
                     PermissionDebug.d(TAG, "reflect get child fragmentManager success");
