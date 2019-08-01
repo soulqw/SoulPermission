@@ -13,6 +13,7 @@ public class SimpleApplication extends Application {
         super.onCreate();
         Log.d(SimpleApplication.class.getSimpleName(), "appInit");
         SoulPermission.setDebug(true);
+//        SoulPermission.skipOldRom(true);
         //no necessary
 //        SoulPermission.init(this);
     }

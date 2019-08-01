@@ -13,12 +13,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+
 import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Permissions;
 import com.qw.soul.permission.bean.Special;
-import com.qw.soul.permission.callbcak.*;
+import com.qw.soul.permission.callbcak.CheckRequestPermissionListener;
+import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener;
+import com.qw.soul.permission.callbcak.CheckStatusCallBack;
+import com.qw.soul.permission.callbcak.GoAppDetailCallBack;
+import com.qw.soul.permission.callbcak.RequestPermissionListener;
+import com.qw.soul.permission.callbcak.SpecialPermissionListener;
 import com.qw.soul.permission.checker.CheckerFactory;
 import com.qw.soul.permission.debug.PermissionDebug;
+import com.qw.soul.permission.request.PermissionConfig;
 import com.qw.soul.permission.request.PermissionRequester;
 
 import java.util.LinkedList;
@@ -63,6 +70,16 @@ public class SoulPermission {
      */
     public static void setDebug(boolean isDebug) {
         PermissionDebug.setDebug(isDebug);
+    }
+
+    /**
+     * 是否跳过旧的系统权限检查
+     * 默认6.0 以下使用 AppOps 检查，跳过的话 6.0以下全部为true
+     *
+     * @param isSkip 是否跳过
+     */
+    public static void skipOldRom(boolean isSkip) {
+        PermissionConfig.skipOldRom = isSkip;
     }
 
     /**
@@ -116,7 +133,7 @@ public class SoulPermission {
             int isGranted = checkPermission(activity, permission)
                     ? PackageManager.PERMISSION_GRANTED
                     : PackageManager.PERMISSION_DENIED;
-            boolean shouldRationale = false;
+            boolean shouldRationale;
             shouldRationale = ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
             resultPermissions.add(new Permission(permission, isGranted, shouldRationale));
         }
