@@ -20,11 +20,11 @@ dependencies {
 
 ```gradle
 dependencies {
-   implementation 'com.qw:soulpermission:1.2.0'
+   implementation 'com.qw:soulpermission:1.2.1'
 }
 ```
 
-[1.2.0 ReleaseNote](https://github.com/soulqw/SoulPermission/releases/tag/1.2.0)
+[1.2.1 ReleaseNote](https://github.com/soulqw/SoulPermission/releases/tag/1.2.1)
 ## Usage：
 
 #### 基本用法：
@@ -132,6 +132,10 @@ Permission checkResult = SoulPermission.getInstance().checkSinglePermission(Mani
                 Utils.showMessage(view, "back from go appDetail");
             }
         });
+```
+- 设置跳过老的权限系统（老的系统默认权限直接授予）
+```java
+ SoulPermission.skipOldRom(true);
 ```
 
 - 设置debug模式(看日志打印)
