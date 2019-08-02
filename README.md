@@ -12,7 +12,7 @@
 
 ```gradle
 dependencies {
-  implementation 'com.qw:soulpermission:1.2.0_x'
+  implementation 'com.qw:soulpermission:1.2.1_x'
 }
 
 ```
