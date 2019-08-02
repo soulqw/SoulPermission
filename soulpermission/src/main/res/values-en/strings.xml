@@ -1,0 +1,14 @@
+<resources>
+    <string name="permission_camera">Camera permission</string>
+    <string name="permission_location">Location permission</string>
+    <string name="permission_call">Dial permission</string>
+    <string name="permission_contact">Contact permission</string>
+    <string name="permission_storage">Storage permission</string>
+    <string name="permission_phone_status">Read phone status permission</string>
+    <string name="permission_calender">Calender permission</string>
+    <string name="permission_sms">SMS permission</string>
+    <string name="permission_sensor">Sensor permission</string>
+    <string name="permission_microphone">Microphone permission</string>
+    <string name="permission_undefined">Unkonwn permission</string>
+    <string name="permission_jump_failed">Try to auto jump settings center failed, please try by yourself</string>
+</resources>
