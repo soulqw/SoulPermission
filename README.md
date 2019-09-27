@@ -1,18 +1,19 @@
 # SoulPermission
+ [![Hex.pm](https://img.shields.io/badge/download-1.2.2-green)](https://bintray.com/beta/#/soulqw/maven/soulpermission?tab=overview)
  [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 #### Android权限适配的更优解决方案：
  -  解耦Activity和Fragment、不再需要Context、不再需要onPermissionResult
  - 内部涵盖版本判断，一行代码解决权限相关操作，无需在调用业务方写权限适配代码，继而实现真正调用时请求的“真运行时权限”
  - 接入成本低，零入侵，仅需要在gradle配置一行代码
  - 支持多项权限同时请求
- - 支持特殊权限(Notification[通知]、SystemAlert[应用悬浮窗]、未知来源应用安装)的检查与请求
+ - 支持特殊权限(Notification[通知]、SystemAlert[应用悬浮窗]、未知来源应用安装、写入系统设置)的检查与请求
  - 支持系统权限页面跳转
  - 支持debug模式
 ## Installation：
 
 ```gradle
 dependencies {
-  implementation 'com.qw:soulpermission:1.2.1_x'
+  implementation 'com.qw:soulpermission:1.2.2_x'
 }
 
 ```
@@ -20,11 +21,11 @@ dependencies {
 
 ```gradle
 dependencies {
-   implementation 'com.qw:soulpermission:1.2.1'
+   implementation 'com.qw:soulpermission:1.2.2'
 }
 ```
 
-[1.2.1 ReleaseNote](https://github.com/soulqw/SoulPermission/releases/tag/1.2.1)
+[1.2.2 ReleaseNote](https://github.com/soulqw/SoulPermission/releases/tag/1.2.2)
 ## Usage：
 
 #### 基本用法：
