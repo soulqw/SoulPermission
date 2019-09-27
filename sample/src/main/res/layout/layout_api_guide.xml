@@ -76,6 +76,14 @@
                 android:text="for Special[InstallUnknownSource]"/>
 
         <Button
+                android:id="@+id/checkAndRequestWriteSystemSettings"
+                android:textAllCaps="false"
+                android:gravity="start|center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="for Special[WriteSystemSettings]"/>
+
+        <Button
                 android:id="@+id/goApplicationSettings"
                 android:textAllCaps="false"
                 android:gravity="start|center_vertical"

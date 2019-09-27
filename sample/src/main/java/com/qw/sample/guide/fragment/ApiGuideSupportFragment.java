@@ -77,6 +77,13 @@ public class ApiGuideSupportFragment extends Fragment {
                         ApiGuideUtils.checkAndRequestUnKnownSource(v);
                     }
                 });
+        findViewById(R.id.checkAndRequestWriteSystemSettings)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ApiGuideUtils.checkAndRequestWriteSystemSettings(v);
+                    }
+                });
         findViewById(R.id.goApplicationSettings)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -135,6 +135,21 @@ public class ApiGuideUtils {
         });
     }
 
+    public static void checkAndRequestWriteSystemSettings(final View view) {
+        //if you want do noting or no need all the callbacks you may use SimpleSpecialPermissionAdapter instead
+        SoulPermission.getInstance().checkAndRequestPermission(Special.WRITE_SETTINGS, new SpecialPermissionListener() {
+            @Override
+            public void onGranted(Special permission) {
+                Utils.showMessage(view, "install unKnown app  is enable now ");
+            }
+
+            @Override
+            public void onDenied(Special permission) {
+                Utils.showMessage(view, "install unKnown app  is disable yet");
+            }
+        });
+    }
+
     public static void goApplicationSettings(final View view) {
         SoulPermission.getInstance().goApplicationSettings(new GoAppDetailCallBack() {
             @Override

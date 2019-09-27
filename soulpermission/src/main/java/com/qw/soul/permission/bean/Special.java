@@ -17,6 +17,11 @@ public enum Special {
     /**
      * 允许安装未知权限
      */
-    UNKNOWN_APP_SOURCES
+    UNKNOWN_APP_SOURCES,
+
+    /**
+     * 修改系统设置
+     */
+    WRITE_SETTINGS
 
 }

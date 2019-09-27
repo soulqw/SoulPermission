@@ -36,6 +36,8 @@ public class SpecialChecker implements PermissionChecker {
                     return checkSystemAlert();
                 case UNKNOWN_APP_SOURCES:
                     return checkUnknownSource();
+                case WRITE_SETTINGS:
+                    return checkWriteSystemSettings();
                 default:
                     return true;
             }
@@ -62,4 +64,12 @@ public class SpecialChecker implements PermissionChecker {
         }
         return true;
     }
+
+    private boolean checkWriteSystemSettings() {
+        if (Build.VERSION.SDK_INT >= M) {
+            return Settings.System.canWrite(context);
+        }
+        return true;
+    }
+
 }

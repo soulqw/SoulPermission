@@ -63,6 +63,9 @@ public class PermissionTools {
             case UNKNOWN_APP_SOURCES:
                 intent = getInstallPermissionIntent(context);
                 break;
+            case WRITE_SETTINGS:
+                intent = getWriteSettingsIntent(context);
+                break;
             case NOTIFICATION:
             default:
                 intent = getAppManageIntent(context);
@@ -111,20 +114,30 @@ public class PermissionTools {
     }
 
     private static Intent getInstallPermissionIntent(Context context) {
-        Uri packageURI = Uri.parse("package:" + context.getPackageName());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
+            return new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, getPackageUri(context));
         }
         return null;
     }
 
     private static Intent getDrawOverPermissionIntent(Context context) {
-        Uri packageURI = Uri.parse("package:" + context.getPackageName());
         //system support
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, packageURI);
+            return new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, getPackageUri(context));
         }
         //  check by appOps, so go to Application settings
         return getAppManageIntent(context);
     }
+
+    private static Intent getWriteSettingsIntent(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, getPackageUri(context));
+        }
+        return getAppManageIntent(context);
+    }
+
+    private static Uri getPackageUri(Context context) {
+        return Uri.parse("package:" + context.getPackageName());
+    }
+
 }
