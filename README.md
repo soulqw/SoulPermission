@@ -6,7 +6,7 @@
  - 内部涵盖版本判断，一行代码解决权限相关操作，无需在调用业务方写权限适配代码，继而实现真正调用时请求的“真运行时权限”
  - 接入成本低，代码改动极小，零入侵，仅需要在gradle配置一行代码
  - 支持多项权限同时请求
- - 支持特殊权限(Notification[通知]、SystemAlert[应用悬浮窗]、UNKNOW_RESOURCES[未知来源应用安装]、WRITE_SYS_SETTINGS[写入系统设置])的检查与请求
+ - 支持特殊权限(Notification[通知]、SystemAlert[应用悬浮窗]、UNKNOW_SOURCE[未知来源应用安装]、WRITE_SYS_SETTINGS[写入系统设置])的检查与请求
  - 支持系统权限页面跳转
  - 支持debug模式
 ## Installation：
