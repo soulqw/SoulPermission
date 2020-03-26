@@ -1,15 +1,14 @@
 package com.qw.soul.permission;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Looper;
 import android.provider.Settings;
-import android.support.annotation.CheckResult;
-import android.support.annotation.Nullable;
+import androidx.annotation.CheckResult;
+import androidx.annotation.Nullable;
 import android.widget.Toast;
 import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Special;

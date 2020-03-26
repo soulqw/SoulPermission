@@ -1,7 +1,7 @@
 package com.qw.soul.permission.request.fragment;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.qw.soul.permission.bean.Special;
 import com.qw.soul.permission.callbcak.GoAppDetailCallBack;
 import com.qw.soul.permission.callbcak.RequestPermissionListener;

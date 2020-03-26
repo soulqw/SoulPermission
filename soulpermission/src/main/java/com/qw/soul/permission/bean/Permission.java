@@ -3,7 +3,7 @@ package com.qw.soul.permission.bean;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.qw.soul.R;
 import com.qw.soul.permission.SoulPermission;
 import com.qw.soul.permission.debug.PermissionDebug;

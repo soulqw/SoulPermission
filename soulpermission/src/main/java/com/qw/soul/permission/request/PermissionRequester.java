@@ -2,7 +2,7 @@ package com.qw.soul.permission.request;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Special;
 import com.qw.soul.permission.callbcak.GoAppDetailCallBack;

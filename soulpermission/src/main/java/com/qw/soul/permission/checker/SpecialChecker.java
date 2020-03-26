@@ -3,7 +3,7 @@ package com.qw.soul.permission.checker;
 import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.v4.app.NotificationManagerCompat;
+import androidx.core.app.NotificationManagerCompat;
 import com.qw.soul.permission.bean.Special;
 import com.qw.soul.permission.debug.PermissionDebug;
 
