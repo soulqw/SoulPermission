@@ -1,4 +1,5 @@
 # SoulPermission
+## 不再维护support，请尽快迁移到AndroidX：
  [![Hex.pm](https://img.shields.io/badge/download-1.2.2-green)](https://bintray.com/beta/#/soulqw/maven/soulpermission?tab=overview)
  [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 #### Android权限适配的更优解决方案：
@@ -10,21 +11,11 @@
  - 支持系统权限页面跳转
  - 支持debug模式
 ## Installation：
-
-```gradle
-dependencies {
-  implementation 'com.qw:soulpermission:1.2.2_x'
-}
-
-```
-如果你的应用还没有适配Android X：
-
 ```gradle
 dependencies {
    implementation 'com.qw:soulpermission:1.2.2'
 }
 ```
-
 [1.2.2 ReleaseNote](https://github.com/soulqw/SoulPermission/releases/tag/1.2.2)
 ## Usage：
 
