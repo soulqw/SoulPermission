@@ -1,5 +1,6 @@
 # SoulPermission
- [![Hex.pm](https://img.shields.io/badge/download-1.2.2-green)](https://bintray.com/beta/#/soulqw/maven/soulpermission?tab=overview)
+ [![Hex.pm](https://img.shields.io/badge/download-1.3.0-green)](https://bintray.com/beta/#/soulqw/maven/soulpermission?tab=overview)
+ [![Hex.pm](https://img.shields.io/badge/Jetpack-AndroidX-orange)]()
  [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 #### Android权限适配的更优解决方案：
  - 方法级权限适配、解耦Activity和Fragment、不再需要Context、不再需要onPermissionResult
@@ -13,7 +14,7 @@
 
 ```gradle
 dependencies {
-  implementation 'com.qw:soulpermission:1.2.2_x'
+  implementation 'com.qw:soulpermission:1.3.0'
 }
 
 ```
@@ -24,8 +25,8 @@ dependencies {
    implementation 'com.qw:soulpermission:1.2.2'
 }
 ```
+- 1.2.2即为支持support28的最后版本，后续不再维护，新功能只会在1.3.0基础上迭代(代码分支 master_old)
 
-[1.2.2 ReleaseNote](https://github.com/soulqw/SoulPermission/releases/tag/1.2.2)
 ## Usage：
 
 #### 基本用法：
