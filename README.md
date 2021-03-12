@@ -148,7 +148,7 @@ SoulPermission.setDebug(true);
 
 #### 注意事项：
 - 最低支持Android 4.0(Api level 14)
-- SoulPermission内部自动初始化，如果你项目中使用了通过替换Application方式从而可能会导致SoulPermission内部初始化失败的框架(如Tinker，腾讯乐固等)，请手动在你的Application类中调用init即可（通过设置debug，可以看到错误日志打印和相关Toast）。
+- SoulPermission内部使用contentProvider自动初始化，如果你项目中使用了通过替换Application方式从而可能会导致SoulPermission内部初始化失败的框架(如Tinker，腾讯乐固等)，请手动在你的Application类中调用init即可（通过设置debug，可以看到错误日志打印和相关Toast）。
 
 ```java
 //invoke init in your application when auto init failed
@@ -180,3 +180,4 @@ public class SimpleApplication extends Application {
 
 ##### 如果有任何问题或者反馈请联系我：
 cd5160866@126.com
+##### 交流QQ群：714178759
