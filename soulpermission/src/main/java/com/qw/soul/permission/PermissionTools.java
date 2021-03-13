@@ -7,9 +7,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Looper;
 import android.provider.Settings;
+
 import androidx.annotation.CheckResult;
 import androidx.annotation.Nullable;
+
 import android.widget.Toast;
+
 import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Special;
 import com.qw.soul.permission.debug.PermissionDebug;
@@ -66,6 +69,8 @@ public class PermissionTools {
                 intent = getWriteSettingsIntent(context);
                 break;
             case NOTIFICATION:
+                intent = getNotificationIntent(context);
+                break;
             default:
                 intent = getAppManageIntent(context);
                 break;
@@ -83,6 +88,17 @@ public class PermissionTools {
             intent = new Intent(Settings.ACTION_MANAGE_ALL_APPLICATIONS_SETTINGS);
         }
         return intent;
+    }
+
+    static Intent getNotificationIntent(Context context) {
+        Intent intent = new Intent();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
+            intent.putExtra(Settings.EXTRA_CHANNEL_ID, context.getApplicationInfo().uid);
+            return intent;
+        }
+        return getAppManageIntent(context);
     }
 
     static Permission[] convert(List<Permission> permissions) {
