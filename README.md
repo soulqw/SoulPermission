@@ -178,6 +178,5 @@ public class SimpleApplication extends Application {
 ### MoreDetail：
 #### [工作原理和最佳示例](https://blog.csdn.net/u014626094/article/details/89438614)
 
-##### 如果有任何问题或者反馈请联系我：
-cd5160866@126.com
-##### 交流QQ群：714178759
+##### 联系我（注明来意）：
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20210209234455912.png)
