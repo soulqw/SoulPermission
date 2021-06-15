@@ -14,7 +14,7 @@
 
 ```gradle
 dependencies {
-  implementation 'com.qw:soulpermission:1.3.1'
+  implementation 'com.github.soulqw:SoulPermission:1.3.1'
 }
 
 ```
@@ -26,6 +26,7 @@ dependencies {
 }
 ```
 - 1.2.2即为支持support28的最后版本，后续不再维护，新功能只会在1.3.0基础上迭代(代码分支 master_old)
+- 后期Jcenter 库将无法正常下载，建议尽快迁移到AndroidX，可享受最新的更新
 
 ## Usage：
 
