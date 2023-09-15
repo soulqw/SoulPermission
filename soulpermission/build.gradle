@@ -4,21 +4,20 @@ android {
     compileSdkVersion 30
     buildToolsVersion '30.0.3'
 
-    lintOptions {
-        checkReleaseBuilds false
-    }
 
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 30
-        versionCode 15
-        versionName "1.3.2"
     }
 
     buildTypes {
         release {
             minifyEnabled false
         }
+    }
+    namespace 'com.qw.soul'
+    lint {
+        checkReleaseBuilds false
     }
 }
 
