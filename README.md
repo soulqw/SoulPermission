@@ -1,5 +1,5 @@
 # SoulPermission
- [![Hex.pm](https://img.shields.io/badge/download-1.3.1-green)](https://bintray.com/beta/#/soulqw/maven/soulpermission?tab=overview)
+ [![Hex.pm](https://img.shields.io/badge/download-1.4.0-green)](https://bintray.com/beta/#/soulqw/maven/soulpermission?tab=overview)
  [![Hex.pm](https://img.shields.io/badge/Jetpack-AndroidX-orange)]()
  [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 #### Android权限适配的更优解决方案：
@@ -14,7 +14,7 @@
 
 ```gradle
 dependencies {
-  implementation 'com.github.soulqw:SoulPermission:1.3.1'
+  implementation 'com.github.soulqw:SoulPermission:1.4.0'
 }
 
 ```
