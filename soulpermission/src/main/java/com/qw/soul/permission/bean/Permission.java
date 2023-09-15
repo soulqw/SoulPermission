@@ -72,11 +72,29 @@ public class Permission {
         return permissionName + " isGranted: " + isGranted() + " shouldRationale " + shouldRationale();
     }
 
+
+    public String getPermissionLabel() {
+        Context context = SoulPermission.getInstance().getContext();
+        if (null == context) {
+            PermissionDebug.e(TAG, "soul permission do not init");
+            return "";
+        }
+        PackageManager manager = context.getPackageManager();
+        try {
+            return manager.getPermissionInfo(permissionName, 0).loadLabel(manager).toString();
+        } catch (PackageManager.NameNotFoundException e) {
+            return "";
+        }
+    }
+
     /**
      * 获取权限名称描述
+     * use getPermissionLabel instead
      *
      * @return desc of permission
+     * @see #getPermissionLabel
      */
+    @Deprecated
     public String getPermissionNameDesc() {
         Context context = SoulPermission.getInstance().getContext();
         if (null == context) {

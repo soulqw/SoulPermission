@@ -5,8 +5,12 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.qw.soul.BuildConfig;
 import com.qw.soul.permission.debug.PermissionDebug;
 
 /**
@@ -17,8 +21,12 @@ public class InitProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        PermissionDebug.d(InitProvider.class.getSimpleName(), "auto init");
-        SoulPermission.getInstance().autoInit((Application) getContext());
+        boolean shouldAutoInit = BuildConfig.PERMISSION_AUTO_INIT;
+        Log.d("qw","init "+shouldAutoInit);
+        PermissionDebug.d(InitProvider.class.getSimpleName(), "auto init " + shouldAutoInit);
+        if (shouldAutoInit) {
+            SoulPermission.getInstance().autoInit((Application) getContext());
+        }
         return true;
     }
 
